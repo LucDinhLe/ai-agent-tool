@@ -1,0 +1,7 @@
+# AI Agent Tool private local context
+/.ai-agent/private/
+
+# Common secret files
+.env
+.env.*
+!.env.example
