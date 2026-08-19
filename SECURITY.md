@@ -2,7 +2,8 @@
 
 ## Mặc định an toàn
 
-- `.ai-agent/private/` bị Git bỏ qua.
+- Trong các bundle Codex, Claude, Gemini và Copilot, `.ai-agent/private/` bị `.ai-agent/.gitignore` bỏ qua mà không cần sửa `.gitignore` của project.
+- Trong OpenClaw, birth flow phải merge `.ai-agent-tool/GITIGNORE.fragment` trước khi ghi dữ liệu cá nhân vào các file memory native ở root.
 - Không lưu mật khẩu, API key, token, cookie, khóa riêng, mã OTP hoặc dữ liệu xác thực vào Markdown.
 - Không đưa nội dung riêng tư vào `SOUL.md`, `WORKSPACE.md`, `AGENTS.md` hoặc `CLAUDE.md` nếu repository có thể được chia sẻ.
 - Quyết định gửi email, đăng bài, phát hành, thanh toán hoặc thay đổi hệ thống bên ngoài cần người dùng xác nhận.
@@ -10,13 +11,21 @@
 
 ## Giới hạn
 
-Các tệp Markdown chỉ tạo chỉ dẫn. Sandbox, quyền tệp, quyền mạng, phê duyệt công cụ và nhật ký kiểm toán vẫn phải được cấu hình trong Codex hoặc Claude Code.
+Các tệp Markdown và Agent Skill tạo chỉ dẫn cho model. Sandbox, quyền tệp, quyền mạng, phê duyệt công cụ, hooks, firewall và nhật ký kiểm toán vẫn phải được cấu hình trong host.
 
 Agent có thể ghi sai ký ức. `MEMORY_POLICY.md` giảm rủi ro bằng nguồn gốc và trạng thái, nhưng người dùng vẫn cần rà soát định kỳ.
+
+`@agents` chỉ cấp phạm vi khởi tạo cục bộ được mô tả trong birth protocol. Nó không cấp quyền gửi, publish, deploy, chi tiền, sửa tài khoản hoặc mở rộng sandbox.
+
+Skill là code/instruction có khả năng ảnh hưởng hành vi agent. Hãy đọc `SKILL.md` và script đi kèm trước khi cài một fork hoặc bản phát hành bên thứ ba.
 
 ## Trước khi đưa repository lên mạng
 
 1. Chạy `git status` và kiểm tra mọi tệp chưa theo dõi.
-2. Xác nhận `.ai-agent/private/` không xuất hiện trong danh sách commit.
+2. Xác nhận `.ai-agent/private/` hoặc memory native của OpenClaw không xuất hiện trong danh sách commit.
 3. Tìm credential bằng công cụ quét bí mật phù hợp với dự án.
 4. Nếu dữ liệu riêng tư từng được commit, xóa tệp hiện tại chưa đủ; cần thu hồi credential và làm sạch lịch sử Git theo quy trình của tổ chức.
+
+## Báo cáo lỗ hổng
+
+Không mở public issue có chứa credential, dữ liệu cá nhân hay proof-of-concept gây hại. Dùng GitHub private vulnerability reporting của repository khi tính năng này được bật.

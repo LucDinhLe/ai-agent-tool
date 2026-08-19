@@ -1,5 +1,16 @@
 # Changelog
 
+## 2.0.0 — 2026-08-19
+
+- Chuyển từ template điền tay sang workflow copy → paste → gọi `@agents` → birth card.
+- Đóng gói sáu folder tự chứa cho Codex, Claude Code, Claude Cowork, Gemini CLI, GitHub Copilot và OpenClaw.
+- Thêm entry file, Agent Skill, native fallback và adapter riêng theo convention chính thức của từng host.
+- Thêm state schema, memory modes `off|minimal|full`, private templates và doctor workflow.
+- Thêm exact `@agents` native subagent cho Gemini CLI và skill invocation chính thức cho Codex/Copilot.
+- Ghi rõ bước Project Instructions bắt buộc của Claude Cowork và giới hạn của portable alias trên các host giữ ký hiệu `@`.
+- Thêm tài liệu “vì sao cần”, kiến trúc agent, support matrix, nguồn chính thức và giới hạn bảo mật.
+- Thêm validator, release builder và gói ZIP riêng cho từng nền tảng.
+
 ## 1.0.0 — 2026-08-17
 
 - Ra mắt tên gọi AI Agent Tool.

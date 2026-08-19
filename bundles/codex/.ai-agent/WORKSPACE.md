@@ -1,5 +1,7 @@
 # Workspace source of truth
 
+Status: uninitialized. The birth workflow inspects the project and replaces empty fields with verified facts.
+
 ## Purpose
 
 - Project or workspace:
