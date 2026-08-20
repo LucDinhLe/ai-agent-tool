@@ -28,9 +28,7 @@ Mỗi host chỉ tự khám phá một số vị trí và filename. Một folder
 
 ### 1.1. One-folder bootstrap
 
-Các phiên bản trước đặt sẵn entry file, runtime state, identity, project context và memory templates ở root bundle. Người dùng phải mở folder nền tảng rồi tự dàn nhiều file vào root dự án, đồng thời dễ ghi đè `AGENTS.md`, `CLAUDE.md`, `GEMINI.md` hoặc instruction đã có.
-
-v2.1 chỉ cài lớp mồi mà host có thể tự khám phá:
+Mỗi gói chỉ cài lớp mồi mà host có thể tự khám phá:
 
 - Codex: `.agents/`
 - Claude Code: `.claude/`
@@ -39,7 +37,7 @@ v2.1 chỉ cài lớp mồi mà host có thể tự khám phá:
 - GitHub Copilot: `.github/`
 - OpenClaw: `skills/`
 
-Sau lời gọi khai sinh, chính agent mới inspect project, tạo hoặc merge entry, chép runtime template, hỏi lựa chọn còn thiếu và chạy doctor. Thiết kế này làm thao tác cài đặt ngắn hơn, giảm nguy cơ ghi đè, và giữ quyền quyết định ở thời điểm agent đã nhìn thấy project thật.
+Sau lời gọi khai sinh, chính agent inspect project, tạo hoặc merge entry, chép runtime template, hỏi lựa chọn còn thiếu và chạy doctor. Thiết kế này làm thao tác cài đặt ngắn, giảm nguy cơ ghi đè và giữ quyền quyết định ở thời điểm agent đã nhìn thấy project thật.
 
 ### 2. Birth workflow
 

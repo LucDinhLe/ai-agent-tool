@@ -6,6 +6,17 @@ AI Agent Tool là lớp khởi tạo mã nguồn mở cho các AI agent phổ bi
 
 > English: AI Agent Tool is a one-folder project bootstrap for persistent, auditable agent identity, context, workflow, and optional memory.
 
+## Bộ file này giúp người dùng làm gì?
+
+- Khởi tạo một project agent bằng một lời gọi thay vì tự tạo và điền nhiều file cấu hình.
+- Giữ vai trò, cách hợp tác và mục tiêu dự án ổn định giữa các phiên làm việc.
+- Giúp AI tìm đúng tài liệu, lệnh setup, lệnh kiểm thử và tiêu chí hoàn thành của dự án.
+- Giảm việc phải nhắc lại preference, quyết định và bối cảnh đã xác minh.
+- Tách memory riêng tư khỏi file chia sẻ, có chế độ `off`, `minimal` và `full`.
+- Kiểm tra cài đặt bằng doctor workflow và báo rõ phần thiếu, xung đột hoặc cần người dùng xác nhận.
+
+AI vẫn hoạt động khi không có bộ file này. Người dùng sẽ phải tự cung cấp lại bối cảnh thường xuyên hơn, còn agent dễ đoán sai phạm vi, quên quyết định và làm việc thiếu nhất quán giữa các phiên.
+
 ## Tải đúng một gói
 
 Không dùng **Code → Download ZIP** để cài. Nút đó tải mã nguồn dành cho nhà phát triển.
@@ -19,7 +30,7 @@ Không dùng **Code → Download ZIP** để cài. Nút đó tải mã nguồn d
 | GitHub Copilot | [AI-Agent-Tool-GitHub-Copilot.zip](https://github.com/LucDinhLe/ai-agent-tool/releases/latest/download/AI-Agent-Tool-GitHub-Copilot.zip) | `.github/` | `/agent-birth` |
 | OpenClaw | [AI-Agent-Tool-OpenClaw.zip](https://github.com/LucDinhLe/ai-agent-tool/releases/latest/download/AI-Agent-Tool-OpenClaw.zip) | `skills/` | `/skill agents`; `$agents` trong Control UI/WebChat |
 
-Mỗi link trên là một gói cài độc lập. Không còn bước mở một gói tổng, chọn một trong sáu folder, rồi tự dàn nhiều file vào root dự án. Trong tài liệu này, **root dự án** nghĩa là **folder chính của dự án** mà AI đang mở.
+Mỗi link trên là một gói cài độc lập. Trong tài liệu này, **root dự án** nghĩa là **folder chính của dự án** mà AI đang mở.
 
 ## Cài trong bốn bước
 
