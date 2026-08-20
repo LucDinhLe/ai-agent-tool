@@ -7,12 +7,12 @@ $repo = (Resolve-Path (Join-Path $PSScriptRoot "..")).Path
 $dist = Join-Path $repo "dist"
 $declaredVersion = (Get-Content -LiteralPath (Join-Path $repo "VERSION") -Raw).Trim()
 $platforms = [ordered]@{
-    "codex"          = "01-CODEX"
-    "claude-code"    = "02-CLAUDE-CODE"
-    "claude-cowork"  = "03-CLAUDE-COWORK"
-    "gemini-cli"     = "04-GEMINI-CLI"
-    "github-copilot" = "05-GITHUB-COPILOT"
-    "openclaw"       = "06-OPENCLAW"
+    "codex"          = "AI-Agent-Tool-Codex.zip"
+    "claude-code"    = "AI-Agent-Tool-Claude-Code.zip"
+    "claude-cowork"  = "AI-Agent-Tool-Claude-Cowork.zip"
+    "gemini-cli"     = "AI-Agent-Tool-Gemini-CLI.zip"
+    "github-copilot" = "AI-Agent-Tool-GitHub-Copilot.zip"
+    "openclaw"       = "AI-Agent-Tool-OpenClaw.zip"
 }
 
 if ([string]::IsNullOrWhiteSpace($Version)) {
@@ -141,34 +141,17 @@ function New-ZipFromGitFiles {
     param(
         [string]$Prefix,
         [string]$Output,
-        [switch]$StripPrefix
+        [switch]$StripPrefix,
+        [string]$ArchivePrefix = ""
     )
 
     $tempRoot = New-TemporaryRoot
     try {
-        Add-GitFilesToDirectory -Prefix $Prefix -DestinationRoot $tempRoot -StripPrefix:$StripPrefix
-        Compress-Directory -SourceRoot $tempRoot -Output $Output
-    }
-    finally {
-        Remove-TemporaryRoot -Path $tempRoot
-    }
-}
-
-function New-AllPlatformsZip {
-    param([string]$Output)
-
-    $tempRoot = New-TemporaryRoot
-    try {
-        foreach ($rootFile in @("00-BAT-DAU-O-DAY.md", "VERSION", "LICENSE")) {
-            Add-GitFilesToDirectory -Prefix $rootFile -DestinationRoot $tempRoot
-        }
-        foreach ($platform in $platforms.Keys) {
-            Add-GitFilesToDirectory `
-                -Prefix "$platform/" `
-                -DestinationRoot $tempRoot `
-                -StripPrefix `
-                -ArchivePrefix $platforms[$platform]
-        }
+        Add-GitFilesToDirectory `
+            -Prefix $Prefix `
+            -DestinationRoot $tempRoot `
+            -StripPrefix:$StripPrefix `
+            -ArchivePrefix $ArchivePrefix
         Compress-Directory -SourceRoot $tempRoot -Output $Output
     }
     finally {
@@ -177,21 +160,16 @@ function New-AllPlatformsZip {
 }
 
 foreach ($platform in $platforms.Keys) {
-    $output = Join-Path $dist "ai-agent-tool-$platform-v$Version.zip"
+    $output = Join-Path $dist $platforms[$platform]
     New-ZipFromGitFiles -Prefix "$platform/" -Output $output -StripPrefix
 }
 
-$coworkSkillOutput = Join-Path $dist "ai-agent-tool-claude-cowork-skill-v$Version.zip"
+$coworkSkillOutput = Join-Path $dist "AI-Agent-Tool-Claude-Cowork-Skill.zip"
 New-ZipFromGitFiles `
-    -Prefix "claude-cowork/cowork-skill/agent-birth/" `
+    -Prefix "claude-cowork/AI-Agent-Tool/skill/agent-birth/" `
     -Output $coworkSkillOutput `
-    -StripPrefix
-
-$allPlatformsOutput = Join-Path $dist "AI-Agent-Tool-CHON-NEN-TANG-v$Version.zip"
-New-AllPlatformsZip -Output $allPlatformsOutput
-
-$sourceOutput = Join-Path $dist "ai-agent-tool-source-v$Version.zip"
-New-ZipFromGitFiles -Prefix "." -Output $sourceOutput
+    -StripPrefix `
+    -ArchivePrefix "agent-birth"
 
 $hashLines = Get-ChildItem -LiteralPath $dist -Filter "*.zip" | Sort-Object Name | ForEach-Object {
     $hash = (Get-FileHash -LiteralPath $_.FullName -Algorithm SHA256).Hash.ToLowerInvariant()

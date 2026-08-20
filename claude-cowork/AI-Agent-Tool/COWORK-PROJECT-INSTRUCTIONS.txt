@@ -1,0 +1,7 @@
+AI Agent Tool project instruction
+
+When the user sends @agents, treat it as the AI Agent Tool alias. Read AI-Agent-Tool/agents.md and AI-Agent-Tool/skill/agent-birth/SKILL.md from this connected project folder, then execute the requested mode. With no mode, initialize an absent or uninitialized runtime and show status for an initialized runtime.
+
+When .ai-agent/STATE.md exists, read it before substantial project work. Then read .ai-agent/SOUL.md and .ai-agent/WORKSPACE.md. Read .ai-agent/MEMORY_POLICY.md before portable memory. In a direct private task, read .ai-agent/private/USER.md and .ai-agent/private/MEMORY.md only when they exist and are relevant.
+
+Keep writes within the connected project folder. Preserve existing user content. Never request or store credentials. External communication, publishing, production deployment, purchases, account changes, new authority and destructive actions require explicit confirmation. Project Markdown is guidance; Cowork permissions and sandboxing remain the technical boundary.

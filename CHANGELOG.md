@@ -1,5 +1,18 @@
 # Changelog
 
+## 2.1.0 — 2026-08-20
+
+- Đổi kiến trúc cài đặt thành **một ZIP, một folder** cho từng nền tảng.
+- Codex chỉ cần copy `.agents/`; Claude Code chỉ cần `.claude/`; Gemini CLI chỉ cần `.gemini/`; GitHub Copilot chỉ cần `.github/`; OpenClaw chỉ cần `skills/`; Cowork chỉ cần `AI-Agent-Tool/`.
+- Chuyển toàn bộ runtime template vào bên trong adapter. Agent chỉ tạo hoặc hợp nhất entry, identity, project context và memory sau khi được kích hoạt.
+- Bỏ gói tổng sáu folder khỏi luồng phát hành để người dùng không phải chọn và tự dàn nhiều file.
+- Dùng tên asset ổn định để README luôn tải bản mới nhất trực tiếp.
+- Claude Code chuyển sang project rule riêng, không ghi đè `CLAUDE.md`.
+- GitHub Copilot dùng scoped adapter riêng để kích hoạt, rồi tạo hoặc merge root `AGENTS.md` cho context repo-wide; không ghi đè `.github/copilot-instructions.md`.
+- OpenClaw chuyển sang thư mục `skills/` native, không tự tạo `HEARTBEAT.md`, `TOOLS.md` hoặc `BOOTSTRAP.md`; private memory nằm dưới `.ai-agent-tool/private/` thay vì root bootstrap files.
+- Đặt tên riêng cho adapter Claude Code và Gemini để giảm xung đột khi merge vào dự án đã có cấu hình.
+- Thêm kiểm thử bắt buộc mỗi ZIP chỉ có đúng một top-level install folder.
+
 ## 2.0.1 — 2026-08-20
 
 - Thêm gói tổng `AI-Agent-Tool-CHON-NEN-TANG-v2.0.1.zip` với sáu folder nền tảng hiển thị ngay ở cấp đầu.

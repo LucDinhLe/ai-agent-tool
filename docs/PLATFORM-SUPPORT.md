@@ -1,6 +1,6 @@
 # Platform support và nguồn chính thức
 
-Kiểm tra gần nhất: **2026-08-19**.
+Kiểm tra gần nhất: **2026-08-20**.
 
 AI Agent Tool đóng gói theo agent host/runtime, không theo tên model. Một host có thể đổi model mà vẫn dùng cùng convention; ngược lại, cùng một model trong host khác có thể đọc file khác.
 
@@ -13,14 +13,14 @@ AI Agent Tool đóng gói theo agent host/runtime, không theo tên model. Một
 
 ## OpenAI Codex
 
-Bundle: `codex/`.
+Install folder: `.agents/` trong `AI-Agent-Tool-Codex.zip`.
 
 - Codex tự đọc `AGENTS.md` theo phạm vi project và ưu tiên file gần working directory hơn.
-- Repository skills nằm ở `.agents/skills/<name>/SKILL.md`.
+- Repository skills nằm ở `.agents/skills/<name>/SKILL.md`. Đây là toàn bộ folder người dùng cần copy.
 - ChatGPT/Codex desktop dùng `@` để chọn skill; Codex CLI và IDE dùng `$` hoặc `/skills`.
 - Sandbox, approvals và instructions là các lớp khác nhau.
 
-Invocation: `@agents` trong desktop; `$agents` trong CLI/IDE.
+Invocation: `@agents` trong desktop; `$agents` trong CLI/IDE. Sau lần gọi đầu, skill tạo hoặc merge `AGENTS.md` và `.ai-agent/`.
 
 Nguồn:
 
@@ -32,15 +32,15 @@ Nguồn:
 
 ## Claude Code
 
-Bundle: `claude-code/`.
+Install folder: `.claude/` trong `AI-Agent-Tool-Claude-Code.zip`.
 
-- Claude Code tự đọc `CLAUDE.md`; file có thể import bằng `@path`.
-- Anthropic khuyên giữ `CLAUDE.md` ngắn và dùng `CLAUDE.local.md` cho preference cá nhân cục bộ.
+- Claude Code tự đọc `CLAUDE.md`, `.claude/rules/`, `.claude/agents/` và `.claude/skills/` theo convention tương ứng.
+- Bundle dùng file riêng `.claude/rules/ai-agent-tool.md` để không ghi đè `CLAUDE.md` đang có.
 - Project skills nằm ở `.claude/skills/<name>/SKILL.md` và gọi bằng `/skill-name`.
 - `/agents` là built-in subagent manager, nên AI Agent Tool dùng `/agent-birth`.
-- `@agents.md` là adapter ghép từ file mention chính thức và nội dung imperative; nó không phải command native tên `@agents`.
+- Gõ `@agents` rồi chọn `agents (agent)` trong typeahead. Anthropic tài liệu hóa cú pháp nhập tay chính xác là `@agent-agents`.
 
-Invocation: mention `@agents.md`; fallback `/agent-birth`.
+Invocation: chọn custom agent từ `@agents`; exact fallback `@agent-agents`; skill fallback `/agent-birth`.
 
 Nguồn:
 
@@ -52,14 +52,14 @@ Nguồn:
 
 ## Claude Cowork
 
-Bundle: `claude-cowork/`.
+Install folder: `AI-Agent-Tool/` trong `AI-Agent-Tool-Claude-Cowork.zip`.
 
 - Cowork Project có Instructions, Context và project memory trong UI.
 - Cowork không đọc local `~/.claude/skills`; skill cần được bật trong tài khoản và upload qua Customize.
 - Tài liệu hiện không cam kết Cowork tự nạp `CLAUDE.md`, `.claude/skills` hoặc một local `agents.md` chỉ vì folder được connect.
-- Vì vậy bundle yêu cầu paste `COWORK-PROJECT-INSTRUCTIONS.txt` một lần. Đây là điều kiện để quảng cáo `@agents` một cách trung thực.
+- Vì vậy bundle yêu cầu paste `AI-Agent-Tool/COWORK-PROJECT-INSTRUCTIONS.txt` một lần. Đây là điều kiện để dùng alias `@agents` một cách trung thực.
 
-Invocation: `@agents` sau Project Instructions; fallback `/agent-birth` sau khi upload skill ZIP.
+Invocation: `@agents` sau Project Instructions. Với skill ZIP đã upload, bật skill rồi yêu cầu Claude dùng **Agent Birth**; tài liệu Cowork hiện chưa cam kết slash command `/agent-birth` cho skill tài khoản.
 
 Nguồn:
 
@@ -71,15 +71,15 @@ Nguồn:
 
 ## Gemini CLI
 
-Bundle: `gemini-cli/`.
+Install folder: `.gemini/` trong `AI-Agent-Tool-Gemini-CLI.zip`.
 
 - `GEMINI.md` là project context file và hỗ trợ `@file` imports.
-- Workspace skills nằm ở `.gemini/skills/` hoặc alias liên công cụ `.agents/skills/`.
+- Workspace skills nằm ở `.gemini/skills/`. Bundle dùng vị trí này để toàn bộ cài đặt nằm trong một folder.
 - Custom subagents nằm ở `.gemini/agents/*.md`.
 - `@subagent-name` ở đầu prompt là cú pháp chính thức để hướng tác vụ tới subagent.
-- Project commands nằm ở `.gemini/commands/`; đường dẫn `ai-agent/init.toml` tạo `/ai-agent:init`.
+- Project commands nằm ở `.gemini/commands/`; file `agent-birth.toml` tạo `/agent-birth`.
 
-Invocation: `@agents`; fallback `/ai-agent:init`.
+Invocation: `@agents`; fallback `/agent-birth`.
 
 Nguồn:
 
@@ -92,14 +92,14 @@ Nguồn:
 
 ## GitHub Copilot
 
-Bundle: `github-copilot/`.
+Install folder: `.github/` trong `AI-Agent-Tool-GitHub-Copilot.zip`.
 
-- Repository-wide instructions nằm ở `.github/copilot-instructions.md`.
+- Repository instructions có thể nằm ở file riêng `.github/instructions/*.instructions.md` với `applyTo`. Bundle dùng tên riêng để tránh ghi đè `.github/copilot-instructions.md`.
 - Project skills có thể nằm ở `.github/skills`, `.agents/skills` hoặc `.claude/skills`.
 - Custom agents cho CLI nằm ở `.github/agents/*.agent.md` và được chọn qua `/agent` hoặc `--agent`.
 - GitHub không tài liệu hóa `@agents` như command native. Bundle giữ nó làm portable alias và dùng `/agent-birth` làm đường chính thức. Copilot CLI đã giữ `/agents` cho cấu hình subagents.
 
-Invocation: `/agent-birth`; portable alias `@agents`; custom-agent fallback `/agent` → `ai-agent-tool`.
+Invocation: `/agent-birth`; custom-agent fallback `/agent` → `ai-agent-tool`; portable alias `@agents` chỉ best-effort.
 
 Nguồn:
 
@@ -113,23 +113,23 @@ Nguồn:
 
 ## OpenClaw
 
-Bundle: `openclaw/`.
+Install folder: `skills/` trong `AI-Agent-Tool-OpenClaw.zip`.
 
-- OpenClaw dùng workspace native với `AGENTS.md`, `SOUL.md`, `IDENTITY.md`, `USER.md`, `BOOTSTRAP.md`, `MEMORY.md`, `TOOLS.md` và dated memory.
-- `BOOTSTRAP.md` là nghi thức một lần và được xóa sau khi birth thành công.
-- OpenClaw tự bootstrap ở lượt thật đầu tiên; skill có thể gọi qua `/skill agents` hoặc `$agents` tùy interface.
+- OpenClaw ưu tiên workspace skill tại `<workspace>/skills/`. Người dùng chỉ copy folder này; skill tạo hoặc merge các file native sau khi được gọi.
+- AI Agent Tool tạo hoặc merge các file shared native `AGENTS.md`, `SOUL.md`, `IDENTITY.md` và `PROJECT.md`. Root `USER.md` và `MEMORY.md` có thể bị OpenClaw tự nạp, nên tool giữ dữ liệu riêng dưới `.ai-agent-tool/private/` và không tạo hai root file này làm kho private.
+- `HEARTBEAT.md` đã bị loại khỏi template workspace mới. Tool notes nên nằm trong `## Tools` của `AGENTS.md`; v2.1 không tạo `TOOLS.md` hoặc `BOOTSTRAP.md` mặc định.
 - `@agents` là portable alias, không phải command native. Trên Discord, Slack hoặc Telegram, ký hiệu `@` còn có thể bị channel dùng cho mention.
 - Workspace là working directory mặc định, không phải hard sandbox; sandbox gateway được cấu hình bên ngoài workspace.
 
-Invocation: auto bootstrap; alias `@agents`; fallback `/skill agents` hoặc `$agents`.
+Invocation: `/skill agents` trên mọi bề mặt; `$agents` trong Control UI/WebChat; alias `@agents` chỉ best-effort. `/agents` là built-in khác.
 
 Nguồn:
 
 - [Agent runtime](https://docs.openclaw.ai/concepts/agent)
-- [Agent bootstrapping](https://docs.openclaw.ai/start/bootstrapping)
-- [Agent workspace](https://docs.openclaw.ai/agent-workspace)
-- [Skills](https://docs.openclaw.ai/skills)
-- [Slash commands](https://docs.openclaw.ai/slash-commands)
+- [Agent workspace](https://docs.openclaw.ai/concepts/agent-workspace)
+- [Skills](https://docs.openclaw.ai/tools/skills)
+- [Slash commands](https://docs.openclaw.ai/tools/slash-commands)
+- [Retired HEARTBEAT.md](https://docs.openclaw.ai/reference/templates/HEARTBEAT)
 - [Sandboxing](https://docs.openclaw.ai/gateway/sandboxing)
 - [Security](https://docs.openclaw.ai/gateway/security)
 

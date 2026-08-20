@@ -1,150 +1,151 @@
 # AI Agent Tool
 
-**Copy một folder → dán vào dự án → gọi `@agents` → khai sinh một agent có danh tính, bối cảnh dự án, ký ức có kiểm soát và quy trình làm việc ổn định.**
+**Tải đúng nền tảng → giải nén → dán đúng một folder vào dự án → kích hoạt → agent tự khai sinh.**
 
-AI Agent Tool là bộ adapter mã nguồn mở cho các agent runtime phổ biến. Nó không sửa trọng số hay “tăng IQ” của mô hình. Nó giúp mô hình dùng năng lực sẵn có tốt hơn bằng cách giảm mơ hồ, nạp đúng ngữ cảnh, chuẩn hóa workflow và giữ các quyết định quan trọng qua nhiều phiên.
+AI Agent Tool là lớp khởi tạo mã nguồn mở cho các AI agent phổ biến. Nó không thay model và không “tăng IQ” bằng phép màu. Nó giúp model dùng năng lực sẵn có ổn định hơn nhờ danh tính rõ, bối cảnh dự án có cấu trúc, workflow lặp lại được, memory có kiểm soát và bước tự kiểm tra.
 
-> English: AI Agent Tool is a copy-paste project layer that bootstraps a persistent, auditable agent identity and workflow across supported AI agent hosts.
+> English: AI Agent Tool is a one-folder project bootstrap for persistent, auditable agent identity, context, workflow, and optional memory.
 
-## Tải đúng gói
+## Tải đúng một gói
 
-### [⬇ Tải AI-Agent-Tool-CHON-NEN-TANG-v2.0.1.zip](https://github.com/LucDinhLe/ai-agent-tool/releases/download/v2.0.1/AI-Agent-Tool-CHON-NEN-TANG-v2.0.1.zip)
+Không dùng **Code → Download ZIP** để cài. Nút đó tải mã nguồn dành cho nhà phát triển.
 
-Đây là gói dễ dùng nhất. Giải nén xong sẽ thấy ngay sáu folder `01-CODEX`, `02-CLAUDE-CODE`, `03-CLAUDE-COWORK`, `04-GEMINI-CLI`, `05-GITHUB-COPILOT` và `06-OPENCLAW`.
+| Công cụ đang dùng | Tải trực tiếp | Sau khi giải nén, chỉ có | Kích hoạt |
+|---|---|---|---|
+| OpenAI Codex | [AI-Agent-Tool-Codex.zip](https://github.com/LucDinhLe/ai-agent-tool/releases/latest/download/AI-Agent-Tool-Codex.zip) | `.agents/` | `@agents` trong desktop, `$agents` trong CLI/IDE |
+| Claude Code | [AI-Agent-Tool-Claude-Code.zip](https://github.com/LucDinhLe/ai-agent-tool/releases/latest/download/AI-Agent-Tool-Claude-Code.zip) | `.claude/` | gõ `@agents` rồi chọn `agents (agent)`, hoặc `/agent-birth` |
+| Claude Cowork | [AI-Agent-Tool-Claude-Cowork.zip](https://github.com/LucDinhLe/ai-agent-tool/releases/latest/download/AI-Agent-Tool-Claude-Cowork.zip) | `AI-Agent-Tool/` | dán Project Instructions một lần, rồi gọi `@agents` |
+| Gemini CLI | [AI-Agent-Tool-Gemini-CLI.zip](https://github.com/LucDinhLe/ai-agent-tool/releases/latest/download/AI-Agent-Tool-Gemini-CLI.zip) | `.gemini/` | `@agents`, dự phòng `/agent-birth` |
+| GitHub Copilot | [AI-Agent-Tool-GitHub-Copilot.zip](https://github.com/LucDinhLe/ai-agent-tool/releases/latest/download/AI-Agent-Tool-GitHub-Copilot.zip) | `.github/` | `/agent-birth` |
+| OpenClaw | [AI-Agent-Tool-OpenClaw.zip](https://github.com/LucDinhLe/ai-agent-tool/releases/latest/download/AI-Agent-Tool-OpenClaw.zip) | `skills/` | `/skill agents`; `$agents` trong Control UI/WebChat |
 
-Nút **Code → Download ZIP** của GitHub tải toàn bộ mã nguồn và vẫn hiển thị sáu folder nền tảng ngay ở cấp đầu. Gói này có thêm tài liệu, script và test dành cho nhà phát triển. Xem [00-BAT-DAU-O-DAY.md](00-BAT-DAU-O-DAY.md) để chọn đúng folder.
+Mỗi link trên là một gói cài độc lập. Không còn bước mở một gói tổng, chọn một trong sáu folder, rồi tự dàn nhiều file vào root dự án. Trong tài liệu này, **root dự án** nghĩa là **folder chính của dự án** mà AI đang mở.
 
-## Vì sao cần bộ này?
+## Cài trong bốn bước
 
-Một mô hình mạnh vẫn bắt đầu mỗi dự án với nhiều khoảng trống: mục tiêu thật là gì, lệnh kiểm thử nào đúng, được phép tự làm đến đâu, người dùng thích cách hợp tác nào, quyết định cũ còn hiệu lực hay không. Nếu thiếu một lớp cấu hình ổn định, người dùng phải nhắc lại bối cảnh, agent dễ đoán sai, hành vi thay đổi giữa các phiên và ký ức có thể lẫn dữ kiện với suy luận.
+1. Tải đúng ZIP theo công cụ AI đang dùng.
+2. Giải nén. Bên trong chỉ có đúng một folder cài đặt ghi trong bảng trên.
+3. Copy nguyên folder đó vào root dự án. Nếu folder nền tảng như `.agents/`, `.claude/`, `.gemini/` hoặc `.github/` đã có, chỉ **merge folder**, không xóa hay thay thế cả folder cũ.
+4. Mở phiên AI mới và dùng lệnh kích hoạt trong bảng.
 
-AI Agent Tool bổ sung năm phần mà một project agent thường cần:
+Không cần mở folder cài đặt và copy từng file bên trong. Không cần tự tạo `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `.ai-agent/` hay các file memory.
 
-- Entry file đúng chuẩn của từng nền tảng.
-- Nghi thức `@agents` để khởi tạo thay vì sửa template thủ công.
-- Danh tính và phong cách hợp tác ổn định.
-- Nguồn sự thật của dự án và bộ nhớ riêng tư có nguồn, ngày, trạng thái.
-- Doctor check để phát hiện file thiếu, placeholder, sai chế độ nhớ và rò rỉ vùng private.
+Nếu hệ điều hành báo trùng đúng một file hoặc skill cùng tên, hãy giữ bản cũ, tạo bản sao lưu và review trước khi thay. Các file của gói đã được đặt tên riêng để giảm xung đột. Trên macOS, `.agents/` và `.claude/` có thể bị Finder ẩn; nhấn `Command + Shift + .` để hiện folder ẩn.
 
-Nếu không dùng bộ này, AI vẫn hoạt động. Chi phí thường xuất hiện dưới dạng prompt lặp lại, onboarding chậm, lệnh sai, quyết định cũ bị quên, kết quả thiếu nhất quán và ranh giới hành động không rõ.
+Sau khi được gọi, adapter sẽ:
 
-## Cách hoạt động
+1. Đọc project và phát hiện cấu hình AI đang có.
+2. Kiểm tra xung đột trước khi ghi.
+3. Tạo hoặc hợp nhất entry file cần thiết của nền tảng.
+4. Tạo `.ai-agent/` hoặc các file workspace native của OpenClaw.
+5. Hỏi một nhóm câu ngắn cho những lựa chọn không thể suy ra.
+6. Trả birth card và doctor check để người dùng review.
 
-```mermaid
-flowchart LR
-    U[Người dùng gọi @agents] --> A[Adapter của nền tảng]
-    A --> B[Birth protocol]
-    B --> I[Identity và cách hợp tác]
-    B --> P[Project source of truth]
-    B --> M[Portable private memory]
-    I --> R[Agent làm việc trong host]
-    P --> R
-    M --> R
-    H[Sandbox, permissions, tools của host] --> R
-```
+## Lưu ý riêng cho từng nền tảng
 
-Mỗi bundle dùng đúng convention mà host có thể khám phá. Workflow cốt lõi vẫn giống nhau, nên một dự án có thể chuyển host mà không phải xây lại toàn bộ “con người và ký ức” của agent.
+### Codex
 
-## Chọn folder
+Codex chính thức khám phá repository skill trong `.agents/skills/`. Vì vậy người dùng chỉ cần dán `.agents/`. Skill sẽ tạo hoặc hợp nhất `AGENTS.md` và `.ai-agent/` sau khi được gọi.
 
-| Nền tảng | Folder trong gói tổng | Gọi khai sinh | Lệnh native dự phòng | Trạng thái |
-|---|---|---|---|---|
-| OpenAI Codex | [`01-CODEX/`](codex/) | `@agents` trong desktop | `$agents` trong CLI/IDE | Supported |
-| Claude Code | [`02-CLAUDE-CODE/`](claude-code/) | mention `@agents.md` | `/agent-birth` | Supported |
-| Claude Cowork | [`03-CLAUDE-COWORK/`](claude-cowork/) | `@agents` sau 1 bước Project Instructions | `/agent-birth` qua skill upload | Supported with setup |
-| Gemini CLI | [`04-GEMINI-CLI/`](gemini-cli/) | `@agents` native subagent | `/ai-agent:init` | Supported |
-| GitHub Copilot | [`05-GITHUB-COPILOT/`](github-copilot/) | alias `@agents` nếu host chuyển nguyên văn | `/agent-birth` | Supported |
-| OpenClaw | [`06-OPENCLAW/`](openclaw/) | auto bootstrap hoặc alias `@agents` | `/skill agents`, `$agents` | Runtime bundle |
+Trong ChatGPT/Codex desktop, gõ `@agents` và chọn **AI Agent Birth**. Trong Codex CLI hoặc IDE, dùng `$agents`.
 
-`@agents` là alias chung của AI Agent Tool. Nó chỉ là cú pháp native trên những host có hỗ trợ tương ứng. Mỗi bundle luôn ghi lệnh dự phòng chính thức để tránh hứa quá khả năng của nền tảng.
+### Claude Code
 
-## Cài trong vài phút
+Claude Code chính thức khám phá project agents, rules và skills trong `.claude/`. Gõ `@agents` rồi chọn `agents (agent)`. Cú pháp nhập tay chính xác là `@agent-agents`; fallback ổn định là `/agent-birth`.
 
-1. Tải [gói chọn nền tảng](https://github.com/LucDinhLe/ai-agent-tool/releases/download/v2.0.1/AI-Agent-Tool-CHON-NEN-TANG-v2.0.1.zip) hoặc ZIP riêng đúng nền tảng từ [GitHub Releases](https://github.com/LucDinhLe/ai-agent-tool/releases/latest).
-2. Nếu dùng gói tổng, chọn đúng một folder nền tảng. Mở folder đó và copy **toàn bộ nội dung bên trong**, gồm cả các thư mục bắt đầu bằng dấu chấm như `.agents/`, `.claude/`, `.gemini/`, `.github/` và `.ai-agent/`.
-3. Dán vào root của project hoặc workspace.
-4. Nếu project đã có `AGENTS.md`, `CLAUDE.md`, `GEMINI.md` hay `.github/copilot-instructions.md`, hãy merge phần AI Agent Tool; đừng ghi đè chỉ dẫn hiện có.
-5. Mở phiên AI mới và gọi lệnh trong bảng trên.
-6. Trả lời một nhóm câu hỏi ngắn. Agent sẽ tự đọc project, đề xuất tên/vai trò, điền file, tạo vùng private và tự kiểm tra.
+Bundle dùng `.claude/rules/ai-agent-tool.md`, nên không ghi đè `CLAUDE.md` đang có của dự án. `/agents` vẫn là lệnh quản lý subagent tích hợp của Claude Code, không phải lệnh khai sinh.
 
-Mỗi bundle có file `AI-AGENT-TOOL.md` hướng dẫn riêng cho đúng host.
+### Claude Cowork
 
-### Claude Cowork có một ngoại lệ
+Anthropic chưa công bố cơ chế tự khám phá local skill hoặc `@agents` chỉ nhờ copy một folder vào Cowork Project. Vì vậy luồng folder cần thêm đúng một bước:
 
-Tài liệu Anthropic hiện chưa công bố một file local tương đương `CLAUDE.md` mà Cowork chắc chắn tự nạp khi chỉ connect folder. Vì vậy bundle Cowork yêu cầu copy nội dung `COWORK-PROJECT-INSTRUCTIONS.txt` vào Project Instructions một lần. Repo không quảng cáo trải nghiệm zero-config khi nền tảng chưa có contract đó.
+1. Copy `AI-Agent-Tool/` vào folder chính của dự án, rồi kết nối chính folder dự án đó với Cowork.
+2. Thêm nội dung `AI-Agent-Tool/COWORK-PROJECT-INSTRUCTIONS.txt` xuống dưới Project Instructions đang có; không xóa hoặc thay thế chỉ dẫn cũ.
+3. Mở task mới và gọi `@agents`.
 
-## Agent sẽ hỏi gì khi khai sinh?
+Người muốn cài skill vào tài khoản có thể tải thêm [AI-Agent-Tool-Claude-Cowork-Skill.zip](https://github.com/LucDinhLe/ai-agent-tool/releases/latest/download/AI-Agent-Tool-Claude-Cowork-Skill.zip), upload tại **Customize → Skills**, bật skill rồi yêu cầu Claude dùng **Agent Birth**.
 
-Birth flow ưu tiên tự suy ra dữ kiện từ project và chỉ hỏi phần còn thiếu:
+### Gemini CLI
 
-- Tên và vai trò của agent.
-- Agent nên gọi người dùng thế nào, dùng ngôn ngữ và múi giờ nào.
-- Kết quả chính cần tối ưu.
-- Phong cách hợp tác và độ sâu câu trả lời.
-- Ranh giới phải xin phép.
-- Chế độ ký ức `off`, `minimal` hoặc `full`.
+Gemini CLI hỗ trợ custom subagent trong `.gemini/agents/`, nên `@agents` là đường gọi native. Nếu copy bundle khi phiên đang mở, chạy `/agents reload`, `/commands reload` và `/skills reload`; sau khi tạo `GEMINI.md`, có thể cần `/memory reload`.
 
-Sau khi ghi file, agent trả một “birth card” gồm danh tính, mục tiêu, chế độ nhớ, ranh giới, file đã đổi và kết quả doctor check.
+### GitHub Copilot
 
-## Các lệnh bảo trì
+GitHub không tài liệu hóa `@agents` như lệnh gọi repository agent. Đường được hỗ trợ là `/agent-birth`, hoặc `/agent` rồi chọn `ai-agent-tool`. Bundle giữ `@agents` như alias best-effort khi giao diện chuyển nguyên văn chuỗi đó tới model.
 
-- `@agents status`: xem agent đang là ai và cấu hình nào đang hoạt động.
-- `@agents doctor`: kiểm tra cấu trúc mà không sửa.
-- `@agents doctor --fix`: sửa lỗi cơ học an toàn.
-- `@agents reconfigure`: đổi danh tính, cách hợp tác, project facts hoặc chế độ nhớ.
-- `@agents remember <fact>`: ghi một dữ kiện bền vững hợp lệ.
-- `@agents forget <fact>`: xóa ký ức portable phù hợp và báo giới hạn xóa.
-- `@agents help`: xem alias và lệnh native của host.
+Bundle dùng file riêng `.github/instructions/ai-agent-tool.instructions.md`, nên không ghi đè `.github/copilot-instructions.md` của dự án.
 
-Thay `@agents` bằng lệnh native của bundle nếu giao diện giữ ký hiệu `@` cho chức năng khác.
+### OpenClaw
 
-## Nâng cấp và gỡ cài đặt
+OpenClaw là agent runtime, không phải model. Copy `skills/` vào active OpenClaw workspace. Dùng `/skill agents` trên mọi bề mặt; `$agents` là shortcut trong Control UI và WebChat. `/agents` là lệnh built-in khác. Sau khi birth thành công, mở phiên mới hoặc chạy `/reset soft` để các file workspace mới được nạp đầy đủ.
 
-Khi project đã được khai sinh, đừng giải nén bản mới đè thẳng lên `.ai-agent/SOUL.md`, `WORKSPACE.md`, `STATE.md` hoặc vùng memory. Hãy tạo backup/branch, merge adapter và protocol mới, giữ dữ liệu đã xác nhận, rồi chạy `@agents doctor`.
+## Vì sao cần AI Agent Tool?
 
-Để gỡ, xóa phần AI Agent Tool trong entry file của host, xóa skill/agent adapter đi kèm và xóa `.ai-agent/` sau khi đã sao lưu hoặc chủ động bỏ memory. Với OpenClaw, giữ các file native khác nếu workspace còn sử dụng chúng; chỉ xóa phần AI Agent Tool và rule ignore tương ứng.
+Một model mạnh vẫn bắt đầu dự án với nhiều khoảng trống: mục tiêu thật là gì, lệnh kiểm thử nào đúng, được phép tự làm đến đâu, người dùng thích cách hợp tác nào, quyết định cũ còn hiệu lực hay không.
+
+AI Agent Tool bổ sung năm phần thường thiếu:
+
+- Entry và adapter đúng convention của host.
+- Nghi thức birth thay cho việc tự sửa nhiều template.
+- Danh tính và cách hợp tác ổn định.
+- Project source of truth gồm mục tiêu, phạm vi, lệnh và tiêu chí hoàn thành.
+- Portable memory có nguồn, ngày, trạng thái và chế độ `off`, `minimal`, `full`.
+
+Nếu không có bộ này, AI vẫn làm việc được. Người dùng thường phải nhắc lại context, agent dễ đoán sai lệnh hoặc phạm vi, quyết định qua phiên bị quên, hành vi thiếu nhất quán và dữ liệu riêng tư khó kiểm soát hơn.
+
+Nếu context hoặc memory bị ghi sai, agent cũng có thể sai một cách nhất quán hơn. Vì vậy birth flow luôn inspect trước, giữ nguồn và trạng thái, không ghi đè âm thầm, và có doctor check.
 
 ## Bộ này đáp ứng phần nào của một AI agent?
 
-| Lớp của agent | AI Agent Tool |
+| Lớp của agent | AI Agent Tool đáp ứng |
 |---|---|
-| Model và khả năng suy luận | Dùng model do host chọn; không thay đổi model |
-| Runtime/harness | Dùng Codex, Claude, Gemini, Copilot hoặc OpenClaw |
-| Persistent project instructions | Có, bằng entry file đúng nền tảng |
-| Reusable workflow/skill | Có, bằng Agent Skill và birth protocol |
+| Model và suy luận | Không thay đổi; dùng model do host chọn |
+| Runtime và tool loop | Dùng runtime hiện có như Codex, Claude, Gemini, Copilot hoặc OpenClaw |
+| Persistent instructions | Có, qua convention chính thức của từng host |
+| Reusable workflow hoặc skill | Có, bằng birth skill và adapter |
 | Identity và project context | Có |
 | Portable memory | Có, tùy chọn và tách private |
-| Tools, MCP, connectors | Không tự cài vì phụ thuộc môi trường và quyền người dùng |
-| Sandbox, permissions, hooks | Không thay thế; chỉ ghi ranh giới mềm |
-| Evals | Có doctor check cấu trúc; chưa thay thế behavioral eval của host |
+| MCP, connector và credential | Không tự cài |
+| Sandbox, permissions và approval | Không thay thế |
+| Evaluation | Có structural doctor check; không thay behavioral eval của host |
 
-Xem [kiến trúc và lý do thiết kế](docs/WHY-AND-ARCHITECTURE.md) để hiểu chi tiết.
+Đọc [Vì sao và kiến trúc](docs/WHY-AND-ARCHITECTURE.md) để xem phân tích đầy đủ.
+
+## Các lệnh bảo trì
+
+- `agents status`: xem danh tính, project context, memory mode và sức khỏe cấu hình.
+- `agents doctor`: kiểm tra mà không sửa.
+- `agents doctor --fix`: áp dụng sửa chữa cơ học an toàn.
+- `agents reconfigure`: đổi danh tính, cách hợp tác, project facts hoặc memory mode.
+- `agents remember <fact>`: lưu một dữ kiện bền vững hợp lệ.
+- `agents forget <fact>`: xóa portable memory phù hợp và báo giới hạn xóa.
+
+Thêm ký hiệu gọi đúng của nền tảng, chẳng hạn `@agents doctor`, `$agents doctor` hoặc `/agent-birth doctor`.
 
 ## Quyền riêng tư và an toàn
 
-- Các bundle coding-agent giữ dữ liệu cá nhân trong `.ai-agent/private/`, được `.ai-agent/.gitignore` chặn mặc định.
-- Không ghi password, token, API key, cookie, private key, OTP hay recovery code vào Markdown.
-- Prompt file là chỉ dẫn mềm. Quyền thật nằm ở sandbox, permissions, tool policy, hooks, firewall và bước phê duyệt của host.
-- OpenClaw dùng file memory native ở root; birth flow merge rule riêng tư vào `.gitignore` trước khi ghi dữ liệu cá nhân.
-- Luôn review skill bên thứ ba và diff trước khi commit.
+- Runtime private memory nằm trong `.ai-agent/private/` và bị ignore mặc định.
+- OpenClaw giữ dữ liệu riêng dưới `.ai-agent-tool/private/`, đã được `.ai-agent-tool/.gitignore` bảo vệ. Tool không tạo root `USER.md` hoặc `MEMORY.md` làm kho riêng vì OpenClaw có thể tự nạp chúng vào session.
+- Không lưu password, token, API key, cookie, private key, OTP hoặc recovery code trong Markdown.
+- Birth invocation chỉ cấp phạm vi khởi tạo cục bộ. Nó không cấp quyền publish, deploy, gửi tin, mua hàng, đổi tài khoản hoặc mở rộng sandbox.
+- Prompt và Markdown là chỉ dẫn mềm. Quyền thật vẫn nằm ở sandbox, permissions, hooks, firewall, tool policy và bước phê duyệt của host.
 
 Đọc [SECURITY.md](SECURITY.md) trước khi dùng trong project có dữ liệu nhạy cảm.
 
-## Nền tảng tài liệu chính thức
+## Nguồn chính thức
 
-Thiết kế v2 được đối chiếu ngày **2026-08-19** với tài liệu chính thức của OpenAI, Anthropic, Google, GitHub và OpenClaw. Xem [bảng hỗ trợ và nguồn](docs/PLATFORM-SUPPORT.md).
+Thiết kế v2.1 được đối chiếu ngày **2026-08-20** với tài liệu chính thức:
 
-Các nguyên tắc cốt lõi bám theo [Codex customization](https://learn.chatgpt.com/docs/customization/overview), [Claude Code features](https://code.claude.com/docs/en/features-overview), [Gemini CLI Agent Skills](https://geminicli.com/docs/cli/skills/), [GitHub Copilot Agent Skills](https://docs.github.com/en/copilot/concepts/agents/about-agent-skills) và [OpenClaw agent workspace](https://docs.openclaw.ai/agent-workspace).
+- [OpenAI: Build skills](https://learn.chatgpt.com/docs/build-skills) và [AGENTS.md](https://learn.chatgpt.com/docs/agent-configuration/agents-md)
+- [Anthropic: Claude Code skills](https://code.claude.com/docs/en/slash-commands), [subagents](https://code.claude.com/docs/en/sub-agents) và [Cowork Projects](https://claude.com/docs/cowork/guide/projects)
+- [Google: Gemini CLI subagents](https://geminicli.com/docs/core/subagents/), [skills](https://geminicli.com/docs/cli/skills/) và [commands](https://geminicli.com/docs/cli/custom-commands/)
+- [GitHub: Copilot Agent Skills](https://docs.github.com/en/copilot/concepts/agents/about-agent-skills), [custom agents](https://docs.github.com/en/copilot/how-tos/copilot-cli/customize-copilot/create-custom-agents-for-cli) và [instructions](https://docs.github.com/en/copilot/reference/custom-instructions-support)
+- [OpenClaw: Skills](https://docs.openclaw.ai/tools/skills), [slash commands](https://docs.openclaw.ai/tools/slash-commands) và [agent workspace](https://docs.openclaw.ai/concepts/agent-workspace)
 
-## Giới hạn trung thực
-
-- Chất lượng vẫn phụ thuộc model, prompt hiện tại, dữ liệu đầu vào và tool mà host cấp.
-- File memory có thể sai; người dùng cần sửa và review định kỳ.
-- Copy/paste không thể tự cấp quyền, cài connector, bật mạng hay cấu hình sandbox.
-- Convention của các host thay đổi theo thời gian; xem release mới trước khi nâng cấp.
+Xem [bảng hỗ trợ nền tảng](docs/PLATFORM-SUPPORT.md) để biết lệnh nào là native, lệnh nào là alias tương thích.
 
 ## Phiên bản và giấy phép
 
-Phiên bản hiện tại: `2.0.1`.
+Phiên bản hiện tại: `2.1.0`.
 
 MIT License. Xem [LICENSE](LICENSE).

@@ -20,3 +20,6 @@ jobs:
         shell: pwsh
         run: ./scripts/build_release.ps1
       - run: python scripts/validate_release.py
+      - name: Smoke-test one-folder installation
+        shell: pwsh
+        run: ./scripts/smoke_one_folder.ps1

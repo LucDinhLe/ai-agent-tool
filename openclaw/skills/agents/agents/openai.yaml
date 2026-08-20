@@ -1,0 +1,4 @@
+interface:
+  display_name: "AI Agent Birth"
+  short_description: "Initialize and maintain an OpenClaw workspace"
+  default_prompt: "Use /skill agents to initialize this OpenClaw workspace."

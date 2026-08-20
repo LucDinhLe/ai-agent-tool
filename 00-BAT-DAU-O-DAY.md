@@ -1,39 +1,22 @@
 # Bắt đầu ở đây
 
-## Nếu bạn tải bằng nút Code → Download ZIP
+## Nếu bạn bấm Code → Download ZIP
 
-GitHub đã tải toàn bộ mã nguồn của AI Agent Tool. Sáu folder cài đặt nằm ngay ở cấp đầu:
+Bạn đã tải mã nguồn của AI Agent Tool, gồm tài liệu, bộ kiểm thử, script đóng gói và source adapter cho sáu nền tảng. Đây không phải gói cài đặt.
 
-1. `codex/`
-2. `claude-code/`
-3. `claude-cowork/`
-4. `gemini-cli/`
-5. `github-copilot/`
-6. `openclaw/`
+Không copy toàn bộ thư mục mã nguồn này vào dự án.
 
-Các thư mục `docs/`, `scripts/`, `tests/` và `.github/` phục vụ phát triển bộ công cụ. Người cài chỉ cần chọn một trong sáu folder nền tảng.
+## Cách cài dễ nhất
 
-## Cách tải dễ nhất
+Mở [GitHub Releases mới nhất](https://github.com/LucDinhLe/ai-agent-tool/releases/latest), rồi tải đúng ZIP có tên nền tảng đang dùng:
 
-Tải trực tiếp tại [AI-Agent-Tool-CHON-NEN-TANG-v2.0.1.zip](https://github.com/LucDinhLe/ai-agent-tool/releases/download/v2.0.1/AI-Agent-Tool-CHON-NEN-TANG-v2.0.1.zip).
+- `AI-Agent-Tool-Codex.zip`
+- `AI-Agent-Tool-Claude-Code.zip`
+- `AI-Agent-Tool-Claude-Cowork.zip`
+- `AI-Agent-Tool-Gemini-CLI.zip`
+- `AI-Agent-Tool-GitHub-Copilot.zip`
+- `AI-Agent-Tool-OpenClaw.zip`
 
-`AI-Agent-Tool-CHON-NEN-TANG-v2.0.1.zip`
+Mỗi ZIP giải nén ra đúng một folder cài đặt. Copy nguyên folder đó vào root dự án, tức folder chính mà AI đang mở, hoặc active workspace, rồi dùng lệnh ghi trong [README.md](README.md).
 
-Giải nén file này sẽ thấy ngay sáu folder ở cấp đầu:
-
-- `01-CODEX/`
-- `02-CLAUDE-CODE/`
-- `03-CLAUDE-COWORK/`
-- `04-GEMINI-CLI/`
-- `05-GITHUB-COPILOT/`
-- `06-OPENCLAW/`
-
-## Cài vào dự án
-
-1. Chọn đúng **một** folder theo công cụ AI đang dùng.
-2. Mở folder đó, chọn toàn bộ nội dung bên trong, gồm cả các thư mục bắt đầu bằng dấu chấm.
-3. Copy nội dung vào root của dự án. Không đặt cả folder `01-CODEX` hay `03-CLAUDE-COWORK` thành một thư mục con trong dự án.
-4. Nếu dự án đã có file hướng dẫn AI, hãy merge nội dung thay vì ghi đè.
-5. Mở phiên AI mới và dùng lệnh ghi trong `AI-AGENT-TOOL.md`.
-
-Claude Cowork cần thêm một bước: dán nội dung `COWORK-PROJECT-INSTRUCTIONS.txt` vào Project Instructions một lần.
+Không cần mở folder cài đặt và tự dàn các file bên trong. Các file danh tính, bối cảnh và memory chỉ được agent tạo sau khi người dùng kích hoạt birth flow.
