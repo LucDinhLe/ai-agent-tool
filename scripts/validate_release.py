@@ -15,12 +15,38 @@ DIST = ROOT / "dist"
 VERSION = (ROOT / "VERSION").read_text(encoding="utf-8").strip()
 
 PLATFORMS = {
-    "codex": ("01-CODEX", "AGENTS.md"),
-    "claude-code": ("02-CLAUDE-CODE", "CLAUDE.md"),
-    "claude-cowork": ("03-CLAUDE-COWORK", "COWORK-PROJECT-INSTRUCTIONS.txt"),
-    "gemini-cli": ("04-GEMINI-CLI", "GEMINI.md"),
-    "github-copilot": ("05-GITHUB-COPILOT", ".github/copilot-instructions.md"),
-    "openclaw": ("06-OPENCLAW", "BOOTSTRAP.md"),
+    "codex": (
+        "01-CODEX",
+        {"AGENTS.md", ".agents/skills/agents/SKILL.md", ".ai-agent/VERSION"},
+    ),
+    "claude-code": (
+        "02-CLAUDE-CODE",
+        {"CLAUDE.md", ".claude/skills/agent-birth/SKILL.md", ".ai-agent/VERSION"},
+    ),
+    "claude-cowork": (
+        "03-CLAUDE-COWORK",
+        {
+            "COWORK-PROJECT-INSTRUCTIONS.txt",
+            "cowork-skill/agent-birth/SKILL.md",
+            ".ai-agent/VERSION",
+        },
+    ),
+    "gemini-cli": (
+        "04-GEMINI-CLI",
+        {"GEMINI.md", ".gemini/agents/agents.md", ".agents/skills/agent-birth/SKILL.md"},
+    ),
+    "github-copilot": (
+        "05-GITHUB-COPILOT",
+        {
+            ".github/copilot-instructions.md",
+            ".github/skills/agent-birth/SKILL.md",
+            ".ai-agent/VERSION",
+        },
+    ),
+    "openclaw": (
+        "06-OPENCLAW",
+        {"BOOTSTRAP.md", ".agents/skills/agents/SKILL.md", ".ai-agent-tool/VERSION"},
+    ),
 }
 
 ERRORS: list[str] = []
@@ -92,12 +118,12 @@ def validate_archives() -> None:
 
     archives = {name: read_archive(DIST / name) for name in sorted(expected) if (DIST / name).is_file()}
 
-    for platform, (_, entrypoint) in PLATFORMS.items():
+    for platform, (_, required) in PLATFORMS.items():
         archive_name = f"ai-agent-tool-{platform}-v{VERSION}.zip"
         require_entries(
             archive_name,
             archives.get(archive_name, set()),
-            {"AI-AGENT-TOOL.md", entrypoint},
+            {"AI-AGENT-TOOL.md"} | required,
         )
 
     skill_name = f"ai-agent-tool-claude-cowork-skill-v{VERSION}.zip"
@@ -112,22 +138,23 @@ def validate_archives() -> None:
         fail(f"wrong top-level layout in {all_name}: {sorted(actual_roots)}")
     if any(name.startswith("bundles/") for name in all_entries):
         fail(f"obsolete bundles/ wrapper found in {all_name}")
-    for _, (label, entrypoint) in PLATFORMS.items():
+    for _, (label, required) in PLATFORMS.items():
         require_entries(
             all_name,
             all_entries,
-            {f"{label}/AI-AGENT-TOOL.md", f"{label}/{entrypoint}"},
+            {f"{label}/AI-AGENT-TOOL.md"} | {f"{label}/{entry}" for entry in required},
         )
 
     source_name = f"ai-agent-tool-source-v{VERSION}.zip"
     source_entries = archives.get(source_name, set())
     if any(name.startswith("bundles/") for name in source_entries):
         fail(f"obsolete bundles/ wrapper found in {source_name}")
-    for platform, (_, entrypoint) in PLATFORMS.items():
+    for platform, (_, required) in PLATFORMS.items():
         require_entries(
             source_name,
             source_entries,
-            {f"{platform}/AI-AGENT-TOOL.md", f"{platform}/{entrypoint}"},
+            {f"{platform}/AI-AGENT-TOOL.md"}
+            | {f"{platform}/{entry}" for entry in required},
         )
 
 

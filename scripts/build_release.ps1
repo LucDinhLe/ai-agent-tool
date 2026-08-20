@@ -121,7 +121,7 @@ function Compress-Directory {
     $stream = [System.IO.File]::Open($resolvedOutput, [System.IO.FileMode]::CreateNew)
     $archive = [System.IO.Compression.ZipArchive]::new($stream, [System.IO.Compression.ZipArchiveMode]::Create, $false)
     try {
-        foreach ($file in Get-ChildItem -LiteralPath $SourceRoot -File -Recurse | Sort-Object FullName) {
+        foreach ($file in Get-ChildItem -LiteralPath $SourceRoot -File -Recurse -Force | Sort-Object FullName) {
             $entryName = $file.FullName.Substring($SourceRoot.Length).TrimStart("\", "/").Replace("\", "/")
             [System.IO.Compression.ZipFileExtensions]::CreateEntryFromFile(
                 $archive,

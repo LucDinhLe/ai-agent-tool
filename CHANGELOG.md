@@ -7,6 +7,7 @@
 - Thêm `00-BAT-DAU-O-DAY.md` để giải thích sự khác nhau giữa ZIP mã nguồn và gói cài đặt.
 - Làm rõ thao tác chọn một nền tảng, mở folder và copy toàn bộ nội dung bên trong vào root dự án.
 - Thêm kiểm thử tự động cho cấu trúc ZIP, đường dẫn an toàn, dữ liệu riêng tư và SHA-256.
+- Bảo đảm trình đóng gói trên Windows và Linux đều giữ các thư mục bắt đầu bằng dấu chấm như `.agents/`, `.claude/`, `.github/` và `.ai-agent/`.
 
 ## 2.0.0 — 2026-08-19
 
