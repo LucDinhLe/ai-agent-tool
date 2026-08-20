@@ -11,8 +11,8 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-BUNDLES = ROOT / "bundles"
-VERSION = "2.0.0"
+PLATFORMS = ROOT
+VERSION = (ROOT / "VERSION").read_text(encoding="utf-8").strip()
 
 REQUIRED = {
     "codex": {
@@ -115,48 +115,63 @@ def sha256(path: Path) -> str:
 
 
 def validate_files() -> None:
+    for relative in ("VERSION", "00-BAT-DAU-O-DAY.md"):
+        if not (ROOT / relative).is_file():
+            fail(f"missing root distribution file: {relative}")
+
+    if (ROOT / "bundles").exists():
+        fail("obsolete bundles/ wrapper still exists")
+
     for name, required in REQUIRED.items():
-        bundle = BUNDLES / name
+        bundle = PLATFORMS / name
         if not bundle.is_dir():
-            fail(f"missing bundle directory: bundles/{name}")
+            fail(f"missing platform directory: {name}")
             continue
         expected = set(required)
         if name != "openclaw":
             expected |= PORTABLE_CORE
         for relative in sorted(expected):
             if not (bundle / relative).is_file():
-                fail(f"missing: bundles/{name}/{relative}")
+                fail(f"missing: {name}/{relative}")
 
         if (bundle / ".gitignore").exists():
-            fail(f"root .gitignore would collide with target project: bundles/{name}")
+            fail(f"root .gitignore would collide with target project: {name}")
 
-    for path in BUNDLES.rglob("*"):
-        if path.is_file() and path.suffix.lower() in {".md", ".txt", ".toml", ".yaml"}:
-            text = read_text(path)
-            if "[TODO" in text or "TODO:" in text:
-                fail(f"unresolved TODO: {path.relative_to(ROOT)}")
+    for name in REQUIRED:
+        for path in (PLATFORMS / name).rglob("*"):
+            if path.is_file() and path.suffix.lower() in {".md", ".txt", ".toml", ".yaml"}:
+                text = read_text(path)
+                if "[TODO" in text or "TODO:" in text:
+                    fail(f"unresolved TODO: {path.relative_to(ROOT)}")
 
 
 def validate_versions_and_state() -> None:
+    if not re.fullmatch(r"\d+\.\d+\.\d+", VERSION):
+        fail(f"invalid root VERSION: {VERSION!r}")
+
     for name in REQUIRED:
         version_path = (
-            BUNDLES / name / (".ai-agent-tool/VERSION" if name == "openclaw" else ".ai-agent/VERSION")
+            PLATFORMS / name / (".ai-agent-tool/VERSION" if name == "openclaw" else ".ai-agent/VERSION")
         )
         if read_text(version_path).strip() != VERSION:
-            fail(f"wrong version in bundles/{name}")
+            fail(f"wrong version in {name}")
 
         state_path = (
-            BUNDLES / name / (".ai-agent-tool/STATE.md" if name == "openclaw" else ".ai-agent/STATE.md")
+            PLATFORMS / name / (".ai-agent-tool/STATE.md" if name == "openclaw" else ".ai-agent/STATE.md")
         )
         state = read_text(state_path)
         if f"platform: {name}" not in state:
-            fail(f"wrong platform state in bundles/{name}")
+            fail(f"wrong platform state in {name}")
         if "status: uninitialized" not in state:
-            fail(f"template state must be uninitialized in bundles/{name}")
+            fail(f"template state must be uninitialized in {name}")
 
 
 def validate_skills() -> None:
-    skill_paths = list(BUNDLES.rglob("SKILL.md"))
+    skill_paths = [
+        path
+        for name in REQUIRED
+        for path in (PLATFORMS / name).rglob("SKILL.md")
+    ]
     if len(skill_paths) != 6:
         fail(f"expected 6 skills, found {len(skill_paths)}")
     for path in skill_paths:
@@ -181,25 +196,25 @@ def validate_invocations() -> None:
         "openclaw/AGENTS.md": ("@agents", "/skill agents", "$agents"),
     }
     for relative, needles in checks.items():
-        text = read_text(BUNDLES / relative)
+        text = read_text(PLATFORMS / relative)
         for needle in needles:
             if needle not in text:
-                fail(f"missing invocation {needle!r}: bundles/{relative}")
+                fail(f"missing invocation {needle!r}: {relative}")
 
-    if len(read_text(BUNDLES / "claude-code/CLAUDE.md").splitlines()) >= 200:
+    if len(read_text(PLATFORMS / "claude-code/CLAUDE.md").splitlines()) >= 200:
         fail("Claude Code CLAUDE.md must remain under 200 lines")
 
 
 def validate_imports() -> None:
     for relative in ("claude-code/CLAUDE.md", "gemini-cli/GEMINI.md"):
-        path = BUNDLES / relative
+        path = PLATFORMS / relative
         for line in read_text(path).splitlines():
             value = line.strip()
             if not value.startswith("@."):
                 continue
             imported = value[1:]
             if not (path.parent / imported).resolve().is_file():
-                fail(f"broken import {value}: bundles/{relative}")
+                fail(f"broken import {value}: {relative}")
 
 
 def validate_common_core() -> None:
@@ -214,13 +229,13 @@ def validate_common_core() -> None:
         ".ai-agent/templates/private/memory/DAILY.template.md",
     ]
     for relative in identical:
-        hashes = {sha256(BUNDLES / name / relative) for name in names}
+        hashes = {sha256(PLATFORMS / name / relative) for name in names}
         if len(hashes) != 1:
             fail(f"portable core drift: {relative}")
     for name in names:
-        ignore = read_text(BUNDLES / name / ".ai-agent/.gitignore").splitlines()
+        ignore = read_text(PLATFORMS / name / ".ai-agent/.gitignore").splitlines()
         if "/private/" not in ignore:
-            fail(f"private memory not ignored: bundles/{name}")
+            fail(f"private memory not ignored: {name}")
 
 
 def validate_git_privacy() -> None:

@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.0.1 — 2026-08-20
+
+- Thêm gói tổng `AI-Agent-Tool-CHON-NEN-TANG-v2.0.1.zip` với sáu folder nền tảng hiển thị ngay ở cấp đầu.
+- Đưa sáu folder nền tảng lên root của repository để bản `Code → Download ZIP` cũng dễ chọn đúng.
+- Thêm `00-BAT-DAU-O-DAY.md` để giải thích sự khác nhau giữa ZIP mã nguồn và gói cài đặt.
+- Làm rõ thao tác chọn một nền tảng, mở folder và copy toàn bộ nội dung bên trong vào root dự án.
+- Thêm kiểm thử tự động cho cấu trúc ZIP, đường dẫn an toàn, dữ liệu riêng tư và SHA-256.
+
 ## 2.0.0 — 2026-08-19
 
 - Chuyển từ template điền tay sang workflow copy → paste → gọi `@agents` → birth card.

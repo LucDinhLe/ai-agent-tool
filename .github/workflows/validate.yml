@@ -16,3 +16,7 @@ jobs:
         with:
           python-version: "3.12"
       - run: python scripts/validate_bundles.py
+      - name: Build release archives
+        shell: pwsh
+        run: ./scripts/build_release.ps1
+      - run: python scripts/validate_release.py

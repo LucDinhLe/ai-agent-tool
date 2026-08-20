@@ -13,7 +13,7 @@ AI Agent Tool đóng gói theo agent host/runtime, không theo tên model. Một
 
 ## OpenAI Codex
 
-Bundle: `bundles/codex/`.
+Bundle: `codex/`.
 
 - Codex tự đọc `AGENTS.md` theo phạm vi project và ưu tiên file gần working directory hơn.
 - Repository skills nằm ở `.agents/skills/<name>/SKILL.md`.
@@ -32,7 +32,7 @@ Nguồn:
 
 ## Claude Code
 
-Bundle: `bundles/claude-code/`.
+Bundle: `claude-code/`.
 
 - Claude Code tự đọc `CLAUDE.md`; file có thể import bằng `@path`.
 - Anthropic khuyên giữ `CLAUDE.md` ngắn và dùng `CLAUDE.local.md` cho preference cá nhân cục bộ.
@@ -52,7 +52,7 @@ Nguồn:
 
 ## Claude Cowork
 
-Bundle: `bundles/claude-cowork/`.
+Bundle: `claude-cowork/`.
 
 - Cowork Project có Instructions, Context và project memory trong UI.
 - Cowork không đọc local `~/.claude/skills`; skill cần được bật trong tài khoản và upload qua Customize.
@@ -71,7 +71,7 @@ Nguồn:
 
 ## Gemini CLI
 
-Bundle: `bundles/gemini-cli/`.
+Bundle: `gemini-cli/`.
 
 - `GEMINI.md` là project context file và hỗ trợ `@file` imports.
 - Workspace skills nằm ở `.gemini/skills/` hoặc alias liên công cụ `.agents/skills/`.
@@ -92,7 +92,7 @@ Nguồn:
 
 ## GitHub Copilot
 
-Bundle: `bundles/github-copilot/`.
+Bundle: `github-copilot/`.
 
 - Repository-wide instructions nằm ở `.github/copilot-instructions.md`.
 - Project skills có thể nằm ở `.github/skills`, `.agents/skills` hoặc `.claude/skills`.
@@ -113,7 +113,7 @@ Nguồn:
 
 ## OpenClaw
 
-Bundle: `bundles/openclaw/`.
+Bundle: `openclaw/`.
 
 - OpenClaw dùng workspace native với `AGENTS.md`, `SOUL.md`, `IDENTITY.md`, `USER.md`, `BOOTSTRAP.md`, `MEMORY.md`, `TOOLS.md` và dated memory.
 - `BOOTSTRAP.md` là nghi thức một lần và được xóa sau khi birth thành công.

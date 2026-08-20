@@ -6,6 +6,14 @@ AI Agent Tool là bộ adapter mã nguồn mở cho các agent runtime phổ bi�
 
 > English: AI Agent Tool is a copy-paste project layer that bootstraps a persistent, auditable agent identity and workflow across supported AI agent hosts.
 
+## Tải đúng gói
+
+### [⬇ Tải AI-Agent-Tool-CHON-NEN-TANG-v2.0.1.zip](https://github.com/LucDinhLe/ai-agent-tool/releases/download/v2.0.1/AI-Agent-Tool-CHON-NEN-TANG-v2.0.1.zip)
+
+Đây là gói dễ dùng nhất. Giải nén xong sẽ thấy ngay sáu folder `01-CODEX`, `02-CLAUDE-CODE`, `03-CLAUDE-COWORK`, `04-GEMINI-CLI`, `05-GITHUB-COPILOT` và `06-OPENCLAW`.
+
+Nút **Code → Download ZIP** của GitHub tải toàn bộ mã nguồn và vẫn hiển thị sáu folder nền tảng ngay ở cấp đầu. Gói này có thêm tài liệu, script và test dành cho nhà phát triển. Xem [00-BAT-DAU-O-DAY.md](00-BAT-DAU-O-DAY.md) để chọn đúng folder.
+
 ## Vì sao cần bộ này?
 
 Một mô hình mạnh vẫn bắt đầu mỗi dự án với nhiều khoảng trống: mục tiêu thật là gì, lệnh kiểm thử nào đúng, được phép tự làm đến đâu, người dùng thích cách hợp tác nào, quyết định cũ còn hiệu lực hay không. Nếu thiếu một lớp cấu hình ổn định, người dùng phải nhắc lại bối cảnh, agent dễ đoán sai, hành vi thay đổi giữa các phiên và ký ức có thể lẫn dữ kiện với suy luận.
@@ -39,21 +47,21 @@ Mỗi bundle dùng đúng convention mà host có thể khám phá. Workflow c�
 
 ## Chọn folder
 
-| Nền tảng | Folder | Gọi khai sinh | Lệnh native dự phòng | Trạng thái |
+| Nền tảng | Folder trong gói tổng | Gọi khai sinh | Lệnh native dự phòng | Trạng thái |
 |---|---|---|---|---|
-| OpenAI Codex | `bundles/codex/` | `@agents` trong desktop | `$agents` trong CLI/IDE | Supported |
-| Claude Code | `bundles/claude-code/` | mention `@agents.md` | `/agent-birth` | Supported |
-| Claude Cowork | `bundles/claude-cowork/` | `@agents` sau 1 bước Project Instructions | `/agent-birth` qua skill upload | Supported with setup |
-| Gemini CLI | `bundles/gemini-cli/` | `@agents` native subagent | `/ai-agent:init` | Supported |
-| GitHub Copilot | `bundles/github-copilot/` | alias `@agents` nếu host chuyển nguyên văn | `/agent-birth` | Supported |
-| OpenClaw | `bundles/openclaw/` | auto bootstrap hoặc alias `@agents` | `/skill agents`, `$agents` | Runtime bundle |
+| OpenAI Codex | [`01-CODEX/`](codex/) | `@agents` trong desktop | `$agents` trong CLI/IDE | Supported |
+| Claude Code | [`02-CLAUDE-CODE/`](claude-code/) | mention `@agents.md` | `/agent-birth` | Supported |
+| Claude Cowork | [`03-CLAUDE-COWORK/`](claude-cowork/) | `@agents` sau 1 bước Project Instructions | `/agent-birth` qua skill upload | Supported with setup |
+| Gemini CLI | [`04-GEMINI-CLI/`](gemini-cli/) | `@agents` native subagent | `/ai-agent:init` | Supported |
+| GitHub Copilot | [`05-GITHUB-COPILOT/`](github-copilot/) | alias `@agents` nếu host chuyển nguyên văn | `/agent-birth` | Supported |
+| OpenClaw | [`06-OPENCLAW/`](openclaw/) | auto bootstrap hoặc alias `@agents` | `/skill agents`, `$agents` | Runtime bundle |
 
 `@agents` là alias chung của AI Agent Tool. Nó chỉ là cú pháp native trên những host có hỗ trợ tương ứng. Mỗi bundle luôn ghi lệnh dự phòng chính thức để tránh hứa quá khả năng của nền tảng.
 
 ## Cài trong vài phút
 
-1. Tải ZIP đúng nền tảng từ [GitHub Releases](https://github.com/LucDinhLe/ai-agent-tool/releases).
-2. Giải nén và copy **toàn bộ nội dung bên trong folder**, gồm cả các thư mục bắt đầu bằng dấu chấm như `.agents/`, `.claude/`, `.gemini/`, `.github/` và `.ai-agent/`.
+1. Tải [gói chọn nền tảng](https://github.com/LucDinhLe/ai-agent-tool/releases/download/v2.0.1/AI-Agent-Tool-CHON-NEN-TANG-v2.0.1.zip) hoặc ZIP riêng đúng nền tảng từ [GitHub Releases](https://github.com/LucDinhLe/ai-agent-tool/releases/latest).
+2. Nếu dùng gói tổng, chọn đúng một folder nền tảng. Mở folder đó và copy **toàn bộ nội dung bên trong**, gồm cả các thư mục bắt đầu bằng dấu chấm như `.agents/`, `.claude/`, `.gemini/`, `.github/` và `.ai-agent/`.
 3. Dán vào root của project hoặc workspace.
 4. Nếu project đã có `AGENTS.md`, `CLAUDE.md`, `GEMINI.md` hay `.github/copilot-instructions.md`, hãy merge phần AI Agent Tool; đừng ghi đè chỉ dẫn hiện có.
 5. Mở phiên AI mới và gọi lệnh trong bảng trên.
@@ -137,6 +145,6 @@ Các nguyên tắc cốt lõi bám theo [Codex customization](https://learn.chat
 
 ## Phiên bản và giấy phép
 
-Phiên bản hiện tại: `2.0.0`.
+Phiên bản hiện tại: `2.0.1`.
 
 MIT License. Xem [LICENSE](LICENSE).
