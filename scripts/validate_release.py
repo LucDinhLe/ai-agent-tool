@@ -37,12 +37,17 @@ PLATFORMS = {
     },
     "claude-cowork": {
         "archive": "AI-Agent-Tool-Claude-Cowork.zip",
-        "root": "AI-Agent-Tool",
+        "root": "khai-sinh",
         "required": {
-            "AI-Agent-Tool/START-HERE.md",
-            "AI-Agent-Tool/COWORK-PROJECT-INSTRUCTIONS.txt",
-            "AI-Agent-Tool/skill/agent-birth/SKILL.md",
-            "AI-Agent-Tool/skill/agent-birth/assets/runtime/.ai-agent/VERSION",
+            "khai-sinh/CLAUDE.md",
+            "khai-sinh/BOOTSTRAP.md",
+            "khai-sinh/IDENTITY.md",
+            "khai-sinh/USER.md",
+            "khai-sinh/PROJECT.md",
+            "khai-sinh/SETUP.md",
+            "khai-sinh/MEMORY.md",
+            "khai-sinh/HUONG-DAN.md",
+            "khai-sinh/COWORK-PROJECT-INSTRUCTIONS.txt",
         },
     },
     "gemini-cli": {
@@ -81,7 +86,6 @@ PLATFORMS = {
     },
 }
 
-COWORK_SKILL_ARCHIVE = "AI-Agent-Tool-Claude-Cowork-Skill.zip"
 ERRORS: list[str] = []
 
 
@@ -94,7 +98,7 @@ def sha256(path: Path) -> str:
 
 
 def expected_zip_names() -> set[str]:
-    return {spec["archive"] for spec in PLATFORMS.values()} | {COWORK_SKILL_ARCHIVE}
+    return {spec["archive"] for spec in PLATFORMS.values()}
 
 
 def validate_safe_entries(archive_name: str, infos: list[zipfile.ZipInfo]) -> None:
@@ -135,15 +139,6 @@ def read_archive(path: Path) -> set[str]:
         return set()
 
 
-def read_archive_text(path: Path, member: str) -> str:
-    try:
-        with zipfile.ZipFile(path) as archive:
-            return archive.read(member).decode("utf-8")
-    except (OSError, KeyError, UnicodeDecodeError, zipfile.BadZipFile) as exc:
-        fail(f"cannot read {member} from {path.name}: {exc}")
-        return ""
-
-
 def require_entries(archive_name: str, names: set[str], required: set[str]) -> None:
     for entry in sorted(required):
         if entry not in names:
@@ -175,31 +170,6 @@ def validate_archives() -> None:
                 f"{archive_name} must contain exactly one install folder "
                 f"{spec['root']!r}, found {sorted(roots)}"
             )
-
-    cowork_skill = archives.get(COWORK_SKILL_ARCHIVE, set())
-    require_entries(
-        COWORK_SKILL_ARCHIVE,
-        cowork_skill,
-        {
-            "agent-birth/SKILL.md",
-            "agent-birth/agents/openai.yaml",
-            "agent-birth/references/BOOTSTRAP.md",
-            "agent-birth/assets/runtime/.ai-agent/VERSION",
-        },
-    )
-    cowork_roots = {PurePosixPath(name).parts[0] for name in cowork_skill}
-    if cowork_roots != {"agent-birth"}:
-        fail(
-            f"{COWORK_SKILL_ARCHIVE} must contain the single skill folder "
-            f"'agent-birth', found {sorted(cowork_roots)}"
-        )
-
-    cowork_skill_text = read_archive_text(
-        DIST / COWORK_SKILL_ARCHIVE, "agent-birth/SKILL.md"
-    )
-    description_match = re.search(r"^description:\s*(.+)$", cowork_skill_text, re.MULTILINE)
-    if not description_match or len(description_match.group(1).strip().strip('"\'')) > 200:
-        fail("Cowork uploaded skill description must be present and at most 200 characters")
 
     openclaw_names = archives.get(PLATFORMS["openclaw"]["archive"], set())
     for forbidden in (
