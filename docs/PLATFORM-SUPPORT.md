@@ -52,21 +52,21 @@ Nguồn:
 
 ## Claude Cowork
 
-Install folder: `AI-Agent-Tool/` trong `AI-Agent-Tool-Claude-Cowork.zip`.
+Install folder: `khai-sinh/` trong `AI-Agent-Tool-Claude-Cowork.zip`.
 
-- Cowork Project có Instructions, Context và project memory trong UI.
-- Cowork không đọc local `~/.claude/skills`; skill cần được bật trong tài khoản và upload qua Customize.
-- Tài liệu hiện không cam kết Cowork tự nạp `CLAUDE.md`, `.claude/skills` hoặc một local `agents.md` chỉ vì folder được connect.
-- Vì vậy bundle yêu cầu paste `AI-Agent-Tool/COWORK-PROJECT-INSTRUCTIONS.txt` một lần. Đây là điều kiện để dùng alias `@agents` một cách trung thực.
+Claude Cowork là nền tảng duy nhất trong sáu không dùng kiến trúc skill + `.ai-agent/` runtime chung. Đây là quyết định có chủ đích, không phải phần thiếu:
 
-Invocation: `@agents` sau Project Instructions. Với skill ZIP đã upload, bật skill rồi yêu cầu Claude dùng **Agent Birth**; tài liệu Cowork hiện chưa cam kết slash command `/agent-birth` cho skill tài khoản.
+- Cowork Project có Instructions, Context và project memory trong UI, nhưng tài liệu hiện không cam kết tự nạp `CLAUDE.md`, local skill hay một `agents.md` chỉ vì folder được connect.
+- Cowork không đọc local `~/.claude/skills`; upload skill qua Customize là luồng riêng cho tài khoản, không phải cho một project folder cụ thể. Vì bundle này gắn với một project cụ thể của một người dùng, `khai-sinh/` bỏ hẳn lớp skill và dùng file Markdown thuần ở root, agent tự đọc theo thứ tự cố định trong `CLAUDE.md`.
+- Bundle yêu cầu paste `khai-sinh/COWORK-PROJECT-INSTRUCTIONS.txt` vào Project Instructions một lần. Đây là điều kiện để `CLAUDE.md` chắc chắn được đọc đầu mỗi phiên, kể cả phiên chạy theo lịch.
+- Danh tính, người dùng, bài toán và ký ức chắt lọc nằm trực tiếp ở `IDENTITY.md`, `USER.md`, `PROJECT.md`, `MEMORY.md` tại root, không có lớp `.ai-agent/private/`. Trạng thái làm việc trong phiên dùng project memory của chính Cowork thay vì một file `STATE.md` portable.
+
+Invocation: không có alias `@agents`. Sau khi paste Project Instructions, mở phiên mới và gõ đại ý "bắt đầu đi"; agent thấy `BOOTSTRAP.md` còn trong thư mục sẽ tự dẫn qua nghi thức khai sinh.
 
 Nguồn:
 
 - [Get started with Claude Cowork](https://support.claude.com/en/articles/13345190-get-started-with-claude-cowork)
 - [Projects in Claude Cowork](https://support.claude.com/en/articles/14116274-organize-your-tasks-with-projects-in-claude-cowork)
-- [Use Skills in Claude](https://support.claude.com/en/articles/12512180-use-skills-in-claude)
-- [Use plugins in Claude](https://support.claude.com/en/articles/13837440-use-plugins-in-claude)
 - [Use Claude Cowork safely](https://support.claude.com/en/articles/13364135-use-claude-cowork-safely)
 
 ## Gemini CLI
