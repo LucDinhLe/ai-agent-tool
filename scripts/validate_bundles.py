@@ -38,18 +38,6 @@ BUNDLES = {
             ".claude/skills/agent-birth/references/INSTALL.md",
         },
     },
-    "claude-cowork": {
-        "root": "AI-Agent-Tool",
-        "skill": "AI-Agent-Tool/skill/agent-birth/SKILL.md",
-        "payload": "AI-Agent-Tool/skill/agent-birth/assets/runtime/.ai-agent",
-        "required": {
-            "AI-Agent-Tool/START-HERE.md",
-            "AI-Agent-Tool/agents.md",
-            "AI-Agent-Tool/COWORK-PROJECT-INSTRUCTIONS.txt",
-            "AI-Agent-Tool/skill/agent-birth/SKILL.md",
-            "AI-Agent-Tool/skill/agent-birth/references/BOOTSTRAP.md",
-        },
-    },
     "gemini-cli": {
         "root": ".gemini",
         "skill": ".gemini/skills/agent-birth/SKILL.md",
@@ -90,6 +78,19 @@ BUNDLES = {
             "skills/agents/assets/native/PROJECT.md",
         },
     },
+}
+
+KHAI_SINH_ROOT = "khai-sinh"
+KHAI_SINH_REQUIRED = {
+    "khai-sinh/CLAUDE.md",
+    "khai-sinh/BOOTSTRAP.md",
+    "khai-sinh/IDENTITY.md",
+    "khai-sinh/USER.md",
+    "khai-sinh/PROJECT.md",
+    "khai-sinh/SETUP.md",
+    "khai-sinh/MEMORY.md",
+    "khai-sinh/HUONG-DAN.md",
+    "khai-sinh/COWORK-PROJECT-INSTRUCTIONS.txt",
 }
 
 PORTABLE_CORE = {
@@ -213,6 +214,47 @@ def validate_one_folder_layout() -> None:
                     fail(f"unresolved TODO: {path.relative_to(ROOT)}")
 
 
+def validate_khai_sinh() -> None:
+    """Claude Cowork ships a plain-Markdown birth kit, not a skill/payload bundle."""
+    platform = "claude-cowork"
+    bundle = ROOT / platform
+    if not bundle.is_dir():
+        fail(f"missing platform directory: {platform}")
+        return
+
+    files = release_source_files(platform)
+    if not files:
+        fail(f"empty release source: {platform}")
+        return
+    roots = {Path(relative).parts[0] for relative in files}
+    if roots != {KHAI_SINH_ROOT}:
+        fail(f"{platform} must install exactly one folder {KHAI_SINH_ROOT!r}, found {sorted(roots)}")
+
+    for relative in sorted(KHAI_SINH_REQUIRED):
+        if not (bundle / relative).is_file():
+            fail(f"missing: {platform}/{relative}")
+
+    for relative in files:
+        path = bundle / relative
+        if path.suffix.lower() in {".md", ".txt"}:
+            text = read_text(path)
+            if "[TODO" in text or "TODO:" in text:
+                fail(f"unresolved TODO: {path.relative_to(ROOT)}")
+
+    instructions = read_text(bundle / KHAI_SINH_ROOT / "COWORK-PROJECT-INSTRUCTIONS.txt")
+    for needle in ("CLAUDE.md", "BOOTSTRAP.md"):
+        if needle not in instructions:
+            fail(f"missing invocation {needle!r}: {platform}/{KHAI_SINH_ROOT}/COWORK-PROJECT-INSTRUCTIONS.txt")
+
+    claude_entry = read_text(bundle / KHAI_SINH_ROOT / "CLAUDE.md")
+    if "BOOTSTRAP.md" not in claude_entry:
+        fail(f"missing bootstrap routing in {platform}")
+
+    bootstrap_text = read_text(bundle / KHAI_SINH_ROOT / "BOOTSTRAP.md")
+    if not bootstrap_text.strip():
+        fail(f"empty bootstrap ritual: {platform}/{KHAI_SINH_ROOT}/BOOTSTRAP.md")
+
+
 def validate_versions_and_state() -> None:
     if not re.fullmatch(r"\d+\.\d+\.\d+", VERSION):
         fail(f"invalid root VERSION: {VERSION!r}")
@@ -230,8 +272,8 @@ def validate_versions_and_state() -> None:
 
 def validate_skills() -> None:
     skill_paths = [ROOT / platform / spec["skill"] for platform, spec in BUNDLES.items()]
-    if len(skill_paths) != 6:
-        fail(f"expected 6 skills, found {len(skill_paths)}")
+    if len(skill_paths) != 5:
+        fail(f"expected 5 skills, found {len(skill_paths)}")
     for path in skill_paths:
         metadata = parse_frontmatter(path)
         relative = path.relative_to(ROOT).as_posix()
@@ -247,15 +289,12 @@ def validate_skills() -> None:
         if relative.startswith("openclaw/"):
             if len(description) > 160:
                 fail("OpenClaw skill description must be at most 160 characters")
-        if relative.startswith("claude-cowork/") and len(description) > 200:
-            fail("Claude Cowork upload skill description must be at most 200 characters")
 
 
 def validate_invocations() -> None:
     checks = {
         "codex/.agents/skills/ai-agent-tool/SKILL.md": ("@agents", "$agents"),
         "claude-code/.claude/rules/ai-agent-tool.md": ("@agents", "@agent-agents", "/agent-birth", "/agents"),
-        "claude-cowork/AI-Agent-Tool/COWORK-PROJECT-INSTRUCTIONS.txt": ("@agents", "AI-Agent-Tool/skill/agent-birth/SKILL.md"),
         "gemini-cli/.gemini/agents/ai-agent-tool.md": ("name: agents", "agent-birth/SKILL.md", "grep_search"),
         "gemini-cli/.gemini/commands/agent-birth.toml": ("prompt =", "agent-birth/SKILL.md"),
         "github-copilot/.github/instructions/ai-agent-tool.instructions.md": ("@agents", "/agent-birth", "applyTo: \"**\""),
@@ -279,7 +318,7 @@ def validate_invocations() -> None:
 
 
 def validate_common_core() -> None:
-    platforms = ["codex", "claude-code", "claude-cowork", "gemini-cli", "github-copilot"]
+    platforms = ["codex", "claude-code", "gemini-cli", "github-copilot"]
     identical = {
         "BIRTH.md",
         "MEMORY_POLICY.md",
@@ -360,6 +399,7 @@ def main() -> int:
         fail("obsolete bundles/ wrapper still exists")
 
     validate_one_folder_layout()
+    validate_khai_sinh()
     validate_versions_and_state()
     validate_skills()
     validate_invocations()
@@ -372,7 +412,7 @@ def main() -> int:
         for error in ERRORS:
             print(f"- {error}")
         return 1
-    print(f"PASS: {len(BUNDLES)} one-folder bundles validated for AI Agent Tool {VERSION}")
+    print(f"PASS: {len(BUNDLES)} skill bundles + 1 khai-sinh bundle validated for AI Agent Tool {VERSION}")
     return 0
 
 
