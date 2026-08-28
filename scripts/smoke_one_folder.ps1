@@ -8,7 +8,7 @@ $tempRoot = Join-Path $tempParent ("one-folder-" + [guid]::NewGuid().ToString("N
 $packages = @(
     @{ Archive = "AI-Agent-Tool-Codex.zip"; Root = ".agents"; Sentinel = "skills/existing/SKILL.md"; Required = "skills/ai-agent-tool/SKILL.md" },
     @{ Archive = "AI-Agent-Tool-Claude-Code.zip"; Root = ".claude"; Sentinel = "rules/existing.md"; Required = "skills/agent-birth/SKILL.md" },
-    @{ Archive = "AI-Agent-Tool-Claude-Cowork.zip"; Root = "AI-Agent-Tool"; Sentinel = "existing-user-file.md"; Required = "skill/agent-birth/SKILL.md" },
+    @{ Archive = "AI-Agent-Tool-Claude-Cowork.zip"; Root = "khai-sinh"; Sentinel = "existing-user-file.md"; Required = "CLAUDE.md" },
     @{ Archive = "AI-Agent-Tool-Gemini-CLI.zip"; Root = ".gemini"; Sentinel = "settings.json"; Required = "agents/ai-agent-tool.md" },
     @{ Archive = "AI-Agent-Tool-GitHub-Copilot.zip"; Root = ".github"; Sentinel = "copilot-instructions.md"; Required = "skills/agent-birth/SKILL.md" },
     @{ Archive = "AI-Agent-Tool-OpenClaw.zip"; Root = "skills"; Sentinel = "existing/SKILL.md"; Required = "agents/SKILL.md" }
