@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.2.0 — 2026-08-28
+
+- Thay toàn bộ adapter Claude Cowork bằng bộ khai sinh Markdown thuần `khai-sinh/`, bỏ hẳn kiến trúc skill/`.ai-agent/` runtime mà Cowork chưa hỗ trợ tự khám phá.
+- Cowork không còn dùng alias `@agents`; kích hoạt bằng cách mở phiên mới và gõ "bắt đầu đi", agent tự dẫn qua nghi thức trong `BOOTSTRAP.md`.
+- Danh tính, người dùng, bài toán và ký ức chắt lọc chuyển thẳng vào `IDENTITY.md`, `USER.md`, `PROJECT.md`, `MEMORY.md` ở root, không còn `.ai-agent/private/`.
+- Bỏ gói `AI-Agent-Tool-Claude-Cowork-Skill.zip` khỏi luồng phát hành vì không còn skill để upload qua Customize.
+- Cập nhật validator, build script và smoke test cho cấu trúc mới; `claude-cowork/` giờ chỉ còn một folder cài đặt duy nhất.
+
 ## 2.1.0 — 2026-08-20
 
 - Đổi kiến trúc cài đặt thành **một ZIP, một folder** cho từng nền tảng.
