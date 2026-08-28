@@ -164,13 +164,6 @@ foreach ($platform in $platforms.Keys) {
     New-ZipFromGitFiles -Prefix "$platform/" -Output $output -StripPrefix
 }
 
-$coworkSkillOutput = Join-Path $dist "AI-Agent-Tool-Claude-Cowork-Skill.zip"
-New-ZipFromGitFiles `
-    -Prefix "claude-cowork/AI-Agent-Tool/skill/agent-birth/" `
-    -Output $coworkSkillOutput `
-    -StripPrefix `
-    -ArchivePrefix "agent-birth"
-
 $hashLines = Get-ChildItem -LiteralPath $dist -Filter "*.zip" | Sort-Object Name | ForEach-Object {
     $hash = (Get-FileHash -LiteralPath $_.FullName -Algorithm SHA256).Hash.ToLowerInvariant()
     "$hash  $($_.Name)"
