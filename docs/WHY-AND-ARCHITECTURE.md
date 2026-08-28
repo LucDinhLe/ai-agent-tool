@@ -24,7 +24,7 @@ Các nhà phát hành hiện đều tách các lớp này. OpenAI mô tả Codex
 
 ### 1. Adapter đúng convention
 
-Mỗi host chỉ tự khám phá một số vị trí và filename. Một folder chung dùng sai entry file có thể nằm trong project nhưng không bao giờ được nạp. Vì vậy v2.1 phát hành một ZIP riêng cho từng host. Mỗi ZIP chỉ có đúng một discovery folder native, còn birth protocol và schema ký ức giữ logic tương đương.
+Mỗi host chỉ tự khám phá một số vị trí và filename. Một folder chung dùng sai entry file có thể nằm trong project nhưng không bao giờ được nạp. Vì vậy v2.1 phát hành một ZIP riêng cho từng host. Năm host dùng đúng một discovery folder native với birth protocol và schema ký ức logic tương đương. Claude Cowork là ngoại lệ có chủ đích: Cowork không có cơ chế discovery skill theo project folder, nên bundle của nó bỏ hẳn lớp skill/`.ai-agent/` và dùng file Markdown thuần ở root, xem chi tiết tại [bảng hỗ trợ nền tảng](PLATFORM-SUPPORT.md#claude-cowork).
 
 ### 1.1. One-folder bootstrap
 
@@ -32,7 +32,7 @@ Mỗi gói chỉ cài lớp mồi mà host có thể tự khám phá:
 
 - Codex: `.agents/`
 - Claude Code: `.claude/`
-- Claude Cowork: `AI-Agent-Tool/` cùng Project Instructions một lần
+- Claude Cowork: `khai-sinh/` cùng Project Instructions một lần, không dùng skill hay `.ai-agent/`
 - Gemini CLI: `.gemini/`
 - GitHub Copilot: `.github/`
 - OpenClaw: `skills/`
@@ -71,6 +71,8 @@ Mỗi entry có trạng thái, nguồn, ngày xác minh và điều kiện revie
 ### 6. Doctor check
 
 Doctor kiểm tra file bắt buộc, state, placeholder, rule riêng tư, đường gọi native và dấu hiệu credential. Đây là structural eval nhỏ, hữu ích sau copy/paste hoặc upgrade. Nó không thay thế behavioral eval của host.
+
+Phần 5 và 6 mô tả năm bundle dùng kiến trúc skill/`.ai-agent/`. Claude Cowork không có memory mode hay lệnh doctor riêng; thay vào đó nó dùng hai lớp trí nhớ đơn giản hơn (project memory của Cowork cho trạng thái phiên, `MEMORY.md` cho quyết định đã chốt) và không có structural eval tự động, xem `khai-sinh/HUONG-DAN.md`.
 
 ## Vì sao agent thường làm tốt hơn khi có bộ này?
 
