@@ -25,7 +25,7 @@ Không dùng **Code → Download ZIP** để cài. Nút đó tải mã nguồn d
 |---|---|---|---|
 | OpenAI Codex | [AI-Agent-Tool-Codex.zip](https://github.com/LucDinhLe/ai-agent-tool/releases/latest/download/AI-Agent-Tool-Codex.zip) | `.agents/` | `@agents` trong desktop, `$agents` trong CLI/IDE |
 | Claude Code | [AI-Agent-Tool-Claude-Code.zip](https://github.com/LucDinhLe/ai-agent-tool/releases/latest/download/AI-Agent-Tool-Claude-Code.zip) | `.claude/` | gõ `@agents` rồi chọn `agents (agent)`, hoặc `/agent-birth` |
-| Claude Cowork | [AI-Agent-Tool-Claude-Cowork.zip](https://github.com/LucDinhLe/ai-agent-tool/releases/latest/download/AI-Agent-Tool-Claude-Cowork.zip) | `AI-Agent-Tool/` | dán Project Instructions một lần, rồi gọi `@agents` |
+| Claude Cowork | [AI-Agent-Tool-Claude-Cowork.zip](https://github.com/LucDinhLe/ai-agent-tool/releases/latest/download/AI-Agent-Tool-Claude-Cowork.zip) | `khai-sinh/` | dán Project Instructions một lần, mở phiên mới và gõ "bắt đầu đi" |
 | Gemini CLI | [AI-Agent-Tool-Gemini-CLI.zip](https://github.com/LucDinhLe/ai-agent-tool/releases/latest/download/AI-Agent-Tool-Gemini-CLI.zip) | `.gemini/` | `@agents`, dự phòng `/agent-birth` |
 | GitHub Copilot | [AI-Agent-Tool-GitHub-Copilot.zip](https://github.com/LucDinhLe/ai-agent-tool/releases/latest/download/AI-Agent-Tool-GitHub-Copilot.zip) | `.github/` | `/agent-birth` |
 | OpenClaw | [AI-Agent-Tool-OpenClaw.zip](https://github.com/LucDinhLe/ai-agent-tool/releases/latest/download/AI-Agent-Tool-OpenClaw.zip) | `skills/` | `/skill agents`; `$agents` trong Control UI/WebChat |
@@ -68,13 +68,13 @@ Bundle dùng `.claude/rules/ai-agent-tool.md`, nên không ghi đè `CLAUDE.md` 
 
 ### Claude Cowork
 
-Anthropic chưa công bố cơ chế tự khám phá local skill hoặc `@agents` chỉ nhờ copy một folder vào Cowork Project. Vì vậy luồng folder cần thêm đúng một bước:
+Cowork chưa công bố cơ chế tự nạp `CLAUDE.md` hoặc một local skill chỉ nhờ copy folder vào Project. Vì vậy Claude Cowork không dùng kiến trúc skill/`@agents` chung với năm nền tảng còn lại; nó dùng một bộ file Markdown thuần, agent tự đọc theo thứ tự cố định, không cần upload skill:
 
-1. Copy `AI-Agent-Tool/` vào folder chính của dự án, rồi kết nối chính folder dự án đó với Cowork.
-2. Thêm nội dung `AI-Agent-Tool/COWORK-PROJECT-INSTRUCTIONS.txt` xuống dưới Project Instructions đang có; không xóa hoặc thay thế chỉ dẫn cũ.
-3. Mở task mới và gọi `@agents`.
+1. Copy `khai-sinh/` vào folder chính của dự án, rồi kết nối chính folder dự án đó với Cowork Project.
+2. Thêm nội dung `khai-sinh/COWORK-PROJECT-INSTRUCTIONS.txt` xuống dưới Project Instructions đang có; không xóa hoặc thay thế chỉ dẫn cũ. Đoạn này bảo đảm mọi phiên, kể cả phiên chạy theo lịch, đều đọc `khai-sinh/CLAUDE.md` trước.
+3. Mở phiên mới, gõ đại ý "bắt đầu đi". Agent thấy `BOOTSTRAP.md` còn trong thư mục sẽ tự dẫn qua nghi thức khai sinh, hỏi lần lượt về bài toán, người dùng, ranh giới rồi mới tới danh tính, và ghi thẳng vào `PROJECT.md`, `USER.md`, `IDENTITY.md`.
 
-Người muốn cài skill vào tài khoản có thể tải thêm [AI-Agent-Tool-Claude-Cowork-Skill.zip](https://github.com/LucDinhLe/ai-agent-tool/releases/latest/download/AI-Agent-Tool-Claude-Cowork-Skill.zip), upload tại **Customize → Skills**, bật skill rồi yêu cầu Claude dùng **Agent Birth**.
+Xem `khai-sinh/HUONG-DAN.md` trong gói để biết chi tiết từng bước.
 
 ### Gemini CLI
 
@@ -133,10 +133,13 @@ Nếu context hoặc memory bị ghi sai, agent cũng có thể sai một cách 
 
 Thêm ký hiệu gọi đúng của nền tảng, chẳng hạn `@agents doctor`, `$agents doctor` hoặc `/agent-birth doctor`.
 
+Riêng Claude Cowork không có skill nên không có các lệnh trên. Đổi ưu tiên, ranh giới hay danh tính thì sửa thẳng `khai-sinh/USER.md`, `khai-sinh/PROJECT.md` hoặc `khai-sinh/IDENTITY.md`, hoặc bảo agent sửa rồi đọc lại để xác nhận.
+
 ## Quyền riêng tư và an toàn
 
 - Runtime private memory nằm trong `.ai-agent/private/` và bị ignore mặc định.
 - OpenClaw giữ dữ liệu riêng dưới `.ai-agent-tool/private/`, đã được `.ai-agent-tool/.gitignore` bảo vệ. Tool không tạo root `USER.md` hoặc `MEMORY.md` làm kho riêng vì OpenClaw có thể tự nạp chúng vào session.
+- Claude Cowork không có `.ai-agent/private/`: `khai-sinh/USER.md`, `PROJECT.md`, `IDENTITY.md`, `MEMORY.md` nằm ngay ở root folder cài đặt và bắt đầu trống. Đừng commit folder `khai-sinh/` đã điền vào một repository công khai; giữ nó trong project riêng đã kết nối với Cowork.
 - Không lưu password, token, API key, cookie, private key, OTP hoặc recovery code trong Markdown.
 - Birth invocation chỉ cấp phạm vi khởi tạo cục bộ. Nó không cấp quyền publish, deploy, gửi tin, mua hàng, đổi tài khoản hoặc mở rộng sandbox.
 - Prompt và Markdown là chỉ dẫn mềm. Quyền thật vẫn nằm ở sandbox, permissions, hooks, firewall, tool policy và bước phê duyệt của host.
@@ -157,6 +160,6 @@ Xem [bảng hỗ trợ nền tảng](docs/PLATFORM-SUPPORT.md) để biết lệ
 
 ## Phiên bản và giấy phép
 
-Phiên bản hiện tại: `2.1.0`.
+Phiên bản hiện tại: `2.2.0`.
 
 MIT License. Xem [LICENSE](LICENSE).
