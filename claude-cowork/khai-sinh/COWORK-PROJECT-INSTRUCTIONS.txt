@@ -1,5 +1,0 @@
-Dán nguyên đoạn dưới vào Project Instructions của Cowork Project gắn với thư mục này. Không xoá chỉ dẫn cũ nếu đã có.
-
----
-Trước mọi việc trong thư mục này, đọc CLAUDE.md ở gốc thư mục và làm theo. Nếu BOOTSTRAP.md còn tồn tại, agent chưa được khai sinh, hãy chạy nghi thức trong file đó trước khi làm việc gì khác.
----

@@ -1,4 +1,0 @@
-interface:
-  display_name: "AI Agent Birth"
-  short_description: "Initialize and maintain a project AI agent"
-  default_prompt: "Use $agent-birth to initialize this project AI agent."

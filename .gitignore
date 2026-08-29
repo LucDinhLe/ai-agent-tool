@@ -1,9 +1,3 @@
 .DS_Store
 Thumbs.db
-*.tmp
-*.log
 dist/
-__pycache__/
-.pytest_cache/
-tests/.tmp/
-**/.ai-agent/private/
