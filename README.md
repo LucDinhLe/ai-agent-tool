@@ -6,6 +6,8 @@ AI Agent Tool dành cho người đã tạo project trên Codex, Claude Cowork h
 
 Bạn tải đúng gói rồi chép các file `.md` vào thư mục gốc của project. Không cần cài phần mềm bổ sung. Mỗi gói chỉ có tám file Markdown phẳng, không có thư mục con, script hay file thực thi.
 
+Đọc [bài giới thiệu đầy đủ](GIOI-THIEU.md) để hiểu cơ chế, lợi ích, cách đo mức cải thiện hiệu suất và giới hạn thực tế của bộ tool.
+
 ## Tải đúng gói
 
 | Nền tảng | Tải trực tiếp | File cửa vào |
