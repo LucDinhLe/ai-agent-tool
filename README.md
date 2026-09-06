@@ -1,6 +1,6 @@
 # AI Agent Tool
 
-**Bộ tám file Markdown phẳng để khai sinh hồ sơ làm việc cho AI agent đang có trong project local.**
+**Bộ file để khai sinh hồ sơ làm việc cho AI agent đang có trong project local.**
 
 AI Agent Tool dành cho người đã tạo project trên Codex, Claude Cowork hoặc Google Antigravity. “Khai sinh” ở đây là thiết lập danh tính, người dùng, bài toán, ranh giới và trí nhớ mang theo project cho agent của nền tảng. Bộ file không đăng ký một custom agent mới trong menu của ứng dụng.
 
