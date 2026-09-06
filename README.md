@@ -77,7 +77,7 @@ Nếu không dùng bộ này, AI vẫn hoạt động. Người dùng sẽ phả
 
 ## Cơ sở kỹ thuật
 
-Thiết kế được đối chiếu ngày **2026-08-29** với tài liệu chính thức:
+Thiết kế được đối chiếu ngày **2026-08-29** với tài liệu chính thức của nhà phát hành:
 
 - [OpenAI Codex: Custom instructions with AGENTS.md](https://developers.openai.com/codex/guides/agents-md)
 - [Anthropic: Organize work with Cowork Projects](https://claude.com/docs/cowork/guide/projects)
